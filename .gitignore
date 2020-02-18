@@ -1,4 +1,5 @@
-*/*.class
-data/index
+bin
+target
+src/main/ressources/index
 test/results
 test/graphs
