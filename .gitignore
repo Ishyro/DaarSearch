@@ -1,1 +1,4 @@
 */*.class
+data/index
+test/results
+test/graphs
