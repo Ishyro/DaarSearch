@@ -1,8 +1,12 @@
-DATA=data
+DATA=src/main/ressources
 RESULT=test/results
 
-JAVA=$(wildcard */*.java)
-CLASS=$(patsubst %.java,%.class,$(JAVA)) automata/RegExTree.class
+JOPTIONS=-classpath src/main/java -d bin
+
+JAVA=$(wildcard src/main/java/automata/*.java) \
+	$(wildcard src/main/java/index/*.java) \
+	$(wildcard src/main/java/kmp/*.java)
+CLASS=$(patsubst src/main/java/%.java,bin/%.class,$(JAVA)) bin/automata/RegExTree.class
 
 BOOKS=$(wildcard $(DATA)/books/*.txt)
 INDEX=$(patsubst $(DATA)/books/%.txt,$(DATA)/index/%.index,$(BOOKS))
@@ -12,10 +16,13 @@ M_NA_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.m_na_results,$(BOOKS))
 
 GRAPHS=test/graphs/u_graph.jpg test/graphs/m_graph.jpg
 
-all: $(CLASS)
+all: bin_index java
 
-%.class: %.java
-	javac $^
+bin_index:
+	mkdir -p bin
+
+java:
+	javac $(JOPTIONS) $(JAVA)
 
 index: all dir_index $(INDEX)
 
@@ -23,7 +30,7 @@ dir_index:
 	mkdir -p $(DATA)/index
 
 $(DATA)/index/%.index: $(DATA)/books/%.txt $(CLASS)
-	java index.FileToIndex $< > $@
+	java -classpath bin index.FileToIndex $< > $@
 
 test: all $(INDEX) dir_result $(U_TEST) $(M_TEST)
 

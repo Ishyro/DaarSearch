@@ -11,6 +11,7 @@ regexes=$2
 index="${file%.txt}".index
 title_temp="${file//*\//}"
 title="${title_temp%.txt}"
+CLASSPATH=bin
 
 if [ ! -r $file ];
   then
@@ -19,12 +20,12 @@ if [ ! -r $file ];
 fi
 
 start=`date +%s%3N`
-java kmp.MultipleSearchesInText $@ > temp
+java -classpath ${CLASSPATH} kmp.MultipleSearchesInText $@ > temp
 end=`date +%s%3N`
 total1=`expr $end - $start`
 
 start=`date +%s%3N`
-java index.MultipleSearchesInText $index $@  > temp
+java -classpath ${CLASSPATH} index.MultipleSearchesInText $index $@  > temp
 end=`date +%s%3N`
 total2=`expr $end - $start`
 

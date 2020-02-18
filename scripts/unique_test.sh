@@ -11,6 +11,7 @@ file=$2
 index="${file%.txt}".index
 title_temp="${file//*\//}"
 title="${title_temp%.txt}"
+CLASSPATH=bin
 
 if [ ! -r $file ];
   then
@@ -19,17 +20,17 @@ if [ ! -r $file ];
 fi
 
 start=`date +%s%3N`
-java automata.SearchInText $regex $file > temp
+java -classpath ${CLASSPATH} automata.SearchInText $regex $file > temp
 end=`date +%s%3N`
 total1=`expr $end - $start`
 
 start=`date +%s%3N`
-java kmp.SearchInText $regex $file > temp
+java -classpath ${CLASSPATH} kmp.SearchInText $regex $file > temp
 end=`date +%s%3N`
 total2=`expr $end - $start`
 
 start=`date +%s%3N`
-java index.SearchInText $regex $file $index > temp
+java -classpath ${CLASSPATH} index.SearchInText $regex $file $index > temp
 end=`date +%s%3N`
 total3=`expr $end - $start`
 
