@@ -6,7 +6,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.FileSystems;
 import java.nio.charset.StandardCharsets;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 import kmp.Facteur;
 
-@javax.ws.rs.Path("/search")
+@Path("/search")
 public class Search extends AbstractSearch {
 
   public Search(String query, List<String> books) {

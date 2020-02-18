@@ -1,4 +1,4 @@
-DATA=src/main/ressources
+DATA=src/main/resources
 RESULT=test/results
 
 JOPTIONS=-classpath src/main/java -d bin
@@ -16,9 +16,9 @@ M_NA_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.m_na_results,$(BOOKS))
 
 GRAPHS=test/graphs/u_graph.jpg test/graphs/m_graph.jpg
 
-all: bin_index java
+all: dir_bin java index jersey
 
-bin_index:
+dir_bin:
 	mkdir -p bin
 
 java:
@@ -31,6 +31,9 @@ dir_index:
 
 $(DATA)/index/%.index: $(DATA)/books/%.txt $(CLASS)
 	java -classpath bin index.FileToIndex $< > $@
+
+jersey:
+	mvn clean install
 
 test: all $(INDEX) dir_result $(U_TEST) $(M_TEST)
 

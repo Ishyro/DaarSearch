@@ -6,7 +6,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.FileSystems;
 import java.nio.charset.StandardCharsets;
 
@@ -15,7 +14,7 @@ import java.util.List;
 import automata.RegEx;
 import automata.Automata;
 
-@javax.ws.rs.Path("/advancedsearch")
+@Path("/advancedsearch")
 public class AdvancedSearch extends AbstractSearch {
 
   public AdvancedSearch(String query, List<String> books) {
