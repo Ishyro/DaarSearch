@@ -21,10 +21,15 @@ import {
   MatToolbarModule,
   MatExpansionModule,
   MatProgressSpinnerModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatDialog,
+  MatDialogRef,
+  MatDialogModule
 } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { BookComponent } from './book/book.component';
+import { SingupComponent } from './auth/singup/singup.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +41,9 @@ import { BookComponent } from './book/book.component';
     DocumentViewComponent,
     DocumentRankComponent,
     DocumentRandomComponent,
-    BookComponent
+    BookComponent,
+    SingupComponent,
+    LoginComponent
 
   ],
   imports: [
@@ -52,7 +59,12 @@ import { BookComponent } from './book/book.component';
     MatExpansionModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
+  ],
+  entryComponents: [
+    LoginComponent,
+    SingupComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

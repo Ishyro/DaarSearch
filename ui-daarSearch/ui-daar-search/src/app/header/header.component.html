@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" >
+<mat-toolbar color="" >
 
 
   <!-- This fills the remaining space of the current row -->
@@ -8,12 +8,12 @@
   <span class="spacer"></span>
   <ul>
     <li>
-      <a mat-button  >Login</a>
+      <a mat-button (click)="login()"  >Login</a>
     </li>
 
 
     <li>
-      <a mat-button  >Signup</a>
+      <a mat-button (click)="signup()" >Signup</a>
     </li>
   </ul>
 </mat-toolbar>
