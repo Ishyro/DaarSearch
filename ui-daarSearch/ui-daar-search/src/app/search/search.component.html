@@ -1,0 +1,12 @@
+
+<mat-card>
+  <h3>type the name of a book here..</h3>
+  <h6>you can type the name of the book or some regular expression.. </h6>
+  <form  #searchForm="ngForm">
+    <mat-form-field>
+      <input matInput name="book" ngModel placeholder="example : The beach by alex garland " #bookInput="ngModel" required book>
+      <mat-error *ngIf="bookInput.invalid">Please type some book !</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="" type="submit" >search </button>
+  </form>
+</mat-card>
