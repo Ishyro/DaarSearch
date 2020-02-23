@@ -1,5 +1,6 @@
-bin
-target
-src/main/resources/index
-test/results
-test/graphs
+data-daarSearch/bin
+data-daarSearch/target
+data-daarSearch/src/main/resources/index
+data-daarSearch/test/results
+data-daarSearch/test/graphs
+data-daarSearch/dependency-reduced-pom.xml

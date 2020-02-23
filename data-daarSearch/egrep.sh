@@ -9,6 +9,7 @@ fi
 regex=$1
 file=$2
 index="${file%.txt}".index
+CLASSPATH=bin
 
 if [ ! -r $file ];
   then
@@ -19,7 +20,7 @@ fi
 if [[ $regex == *"*"* ]] || [[ $regex == *"."* ]] || [[ $regex == *"("* ]] || [[ $regex == *"|"* ]];
   then
     echo "using automata method"
-    java automata.SearchInText $regex $file
+    java -classpath ${CLASSPATH} automata.SearchInText $regex $file
     exit 0
 fi
 
@@ -28,14 +29,14 @@ if [[ $regex =~ ^[a-zA-Z]+$ ]];
     if  [ -r $index ];
       then
         echo "egrep building radix-tree from an index file"
-        java index.SearchInText $regex $file $index
+        java -classpath ${CLASSPATH} index.SearchInText $regex $file $index
       else
         echo "couldn't find" $index", using KMP method"
-        java kmp.SearchInText $regex $file
+        java -classpath ${CLASSPATH} kmp.SearchInText $regex $file
     fi
     exit 0
 fi
 
 echo "using KMP method"
-java kmp.SearchInText $regex $file
+java -classpath ${CLASSPATH} kmp.SearchInText $regex $file
 exit 0
