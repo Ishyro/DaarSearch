@@ -7,6 +7,7 @@ const User = require("../models/user");
 const router = express.Router();
 
 router.post("/signup", (req, res, next) => {
+  
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
       email: req.body.email,
@@ -15,6 +16,7 @@ router.post("/signup", (req, res, next) => {
     user
       .save()
       .then(result => {
+        console.log("new user is created!");
         res.status(201).json({
           message: "User created!",
           result: result

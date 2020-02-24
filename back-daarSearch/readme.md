@@ -7,3 +7,10 @@
 > nodemon server.js
 
 
+
+## We use :
+* `expressJs as http framework`
+* ` Mongoose to communicate with mongoDB`
+* ` Nodemon to refresh the server when updating`
+* `bcrypt to hash the password`
+* `jsonwebtoken for the authentification with tokens`
