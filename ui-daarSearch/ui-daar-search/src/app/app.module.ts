@@ -24,12 +24,14 @@ import {
   MatPaginatorModule,
   MatDialog,
   MatDialogRef,
-  MatDialogModule
+  MatDialogModule,
+  MatTableModule
 } from '@angular/material';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BookComponent } from './book/book.component';
 import { SingupComponent } from './auth/singup/singup.component';
 import { LoginComponent } from './auth/login/login.component';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -60,13 +62,16 @@ import { LoginComponent } from './auth/login/login.component';
     MatProgressSpinnerModule,
     MatPaginatorModule,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule
   ],
   entryComponents: [
     LoginComponent,
     SingupComponent
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,3 +8,17 @@ mat-card {
   padding: 5%;
   margin: 1%;
 }
+
+/* To display a border for the input */
+input {
+  border: 3px solid black;
+  border-radius: 10px;
+  background: transparent;
+  background-color: transparent;
+  padding: 1%;
+
+}
+
+table {
+  width: 100%;
+}
