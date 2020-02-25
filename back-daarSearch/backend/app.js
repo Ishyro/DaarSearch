@@ -7,13 +7,26 @@ const usersRoutes = require("./routes/user");
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/myapp1', {useNewUrlParser: true})
+// local storage you need to install mongoDB
+// mongoose.connect('mongodb://localhost:27017/myapp1', {useNewUrlParser: true})
+//   .then(() => {
+//     console.log("Connected to database!");
+//   })
+//   .catch(() => {
+//     console.log("Connection failed!");
+//   });
+
+
+// server storage
+mongoose.connect('mongodb://daarSearcher:helloworld@51.75.124.11:27017/admin', {useNewUrlParser: true})
   .then(() => {
     console.log("Connected to database!");
   })
   .catch(() => {
     console.log("Connection failed!");
   });
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
