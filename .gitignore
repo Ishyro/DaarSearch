@@ -1,6 +1,8 @@
 data-daarSearch/bin
 data-daarSearch/target
 data-daarSearch/src/main/resources/index
+data-daarSearch/src/main/resources/jaccard
+data-daarSearch/src/main/resources/jaccard.txt
 data-daarSearch/test/results
 data-daarSearch/test/graphs
 data-daarSearch/dependency-reduced-pom.xml

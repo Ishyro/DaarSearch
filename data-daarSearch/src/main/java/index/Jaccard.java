@@ -1,17 +1,6 @@
 package index;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.IOException;
-import java.util.List;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.FileSystems;
-import java.nio.charset.StandardCharsets;
-
-import java.util.stream.Collectors;
-import java.util.Map;
+import java.nio.file.Paths;
 
 public class Jaccard {
 
@@ -24,6 +13,9 @@ public class Jaccard {
     tree1.init(new Trie(args[0]));
     RadixTree tree2 = new RadixTree();
     tree2.init(new Trie(args[1]));
-    System.out.println(RadixTree.jaccardDistance(tree1, tree2));
+    String file1 = Paths.get(args[0]).getFileName().toString();
+    String file2 = Paths.get(args[1]).getFileName().toString();
+    System.out.println(file1.substring(0, file1.lastIndexOf('.')) + " " +
+      file2.substring(0, file2.lastIndexOf('.')) + " " + RadixTree.jaccardDistance(tree1, tree2));
   }
 }

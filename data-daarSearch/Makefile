@@ -1,3 +1,5 @@
+# files and folders
+
 DATA=src/main/resources
 RESULT=test/results
 
@@ -10,35 +12,53 @@ CLASS=$(patsubst src/main/java/%.java,bin/%.class,$(JAVA)) bin/automata/RegExTre
 
 BOOKS=$(wildcard $(DATA)/books/*.txt)
 INDEX=$(patsubst $(DATA)/books/%.txt,$(DATA)/index/%.index,$(BOOKS))
+JACCARD=$(patsubst $(DATA)/books/%.txt,$(DATA)/jaccard/%.jaccard,$(BOOKS))
 U_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.u_results,$(BOOKS))
 M_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.m_results,$(BOOKS))
 M_NA_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.m_na_results,$(BOOKS))
 
-GRAPHS=test/graphs/u_graph.jpg test/graphs/m_graph.jpg
+GRAPHS=test/graphs/u_graph.jpg test/graphs/m_graph_all.jpg test/graphs/m_graph_no_automata.jpg
 
-all: dir_bin java index jersey
+# utilities
+
+MKDIR_P=mkdir -p
+
+# rules
+
+all: dir_bin java index jaccard jersey
 
 dir_bin:
-	mkdir -p bin
+	$(MKDIR_P) bin
 
 java:
 	javac $(JOPTIONS) $(JAVA)
 
-index: all dir_index $(INDEX)
+index: java dir_index $(INDEX)
 
 dir_index:
-	mkdir -p $(DATA)/index
+	$(MKDIR_P) $(DATA)/index
 
-$(DATA)/index/%.index: $(DATA)/books/%.txt $(CLASS)
+$(DATA)/index/%.index: $(DATA)/books/%.txt
 	java -classpath bin index.FileToIndex $< > $@
 
-jersey:
+jaccard: java index $(DATA)/jaccard.txt jaccard_dir $(JACCARD)
+
+$(DATA)/jaccard.txt:
+	scripts/jaccard_distances.sh > $@
+
+jaccard_dir:
+	$(MKDIR_P) $(DATA)/jaccard
+
+$(DATA)/jaccard/%.jaccard: $(DATA)/books/%.txt $(DATA)/jaccard.txt
+	scripts/jaccard_sort_1_book.sh $^ > $@
+
+jersey: java index jaccard
 	mvn clean install
 
-test: all $(INDEX) dir_result $(U_TEST) $(M_TEST)
+test: all dir_result $(U_TEST) $(M_TEST)
 
 dir_result:
-	mkdir -p $(RESULT)
+	$(MKDIR_P) $(RESULT)
 
 $(RESULT)/%.u_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
 	scripts/unique_test_one_file.sh $<
@@ -49,10 +69,10 @@ $(RESULT)/%.m_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
 $(RESULT)/%.m_na_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
 	scripts/multiple_test_one_file_no_automata.sh $<
 
-graph: dir_graph test/graphs/u_graph.jpg test/graphs/m_graph_all.jpg test/graphs/m_graph_no_automata.jpg
+graph: all test dir_graph $(GRAPHS)
 
 dir_graph:
-	mkdir -p test/graphs
+	$(MKDIR_P) test/graphs
 
 test/graphs/u_graph.jpg: $(U_TEST)
 	scripts/unique_graph.sh
@@ -65,7 +85,12 @@ test/graphs/m_graph_no_automata.jpg: $(M_NA_TEST)
 
 clean:
 	rm -f $(CLASS)
+	rm -rf target
+
+clean_data:
+	rm -f $(DATA)/jaccard.txt
 	rm -rf $(DATA)/index
+	rm -rf $(DATA)/jaccard
 
 clean_test:
 	rm -rf $(RESULT)
@@ -73,4 +98,4 @@ clean_test:
 clean_graph:
 	rm -rf test/graphs
 
-clean_all: clean clean_index clean_test
+clean_all: clean clean_data clean_test clean_graph

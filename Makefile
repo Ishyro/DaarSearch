@@ -1,4 +1,4 @@
-TOPTARGETS := all test graph clean clean_test clean_graph clean_all
+TOPTARGETS := all index jaccard test graph clean clean_data clean_test clean_graph clean_all
 
 SUBDIRS := data-daarSearch #$(wildcard */.)
 
