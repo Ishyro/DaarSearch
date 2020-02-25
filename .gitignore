@@ -1,7 +1,7 @@
 data-daarSearch/bin
 data-daarSearch/target
-data-daarSearch/src/main/resources/index
-data-daarSearch/src/main/resources/jaccard
+data-daarSearch/src/main/resources/indexes
+data-daarSearch/src/main/resources/jaccards
 data-daarSearch/src/main/resources/jaccard.txt
 data-daarSearch/test/results
 data-daarSearch/test/graphs

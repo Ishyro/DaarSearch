@@ -11,8 +11,8 @@ JAVA=$(wildcard src/main/java/automata/*.java) \
 CLASS=$(patsubst src/main/java/%.java,bin/%.class,$(JAVA)) bin/automata/RegExTree.class
 
 BOOKS=$(wildcard $(DATA)/books/*.txt)
-INDEX=$(patsubst $(DATA)/books/%.txt,$(DATA)/index/%.index,$(BOOKS))
-JACCARD=$(patsubst $(DATA)/books/%.txt,$(DATA)/jaccard/%.jaccard,$(BOOKS))
+INDEX=$(patsubst $(DATA)/books/%.txt,$(DATA)/indexes/%.index,$(BOOKS))
+JACCARD=$(patsubst $(DATA)/books/%.txt,$(DATA)/jaccards/%.jaccard,$(BOOKS))
 U_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.u_results,$(BOOKS))
 M_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.m_results,$(BOOKS))
 M_NA_TEST=$(patsubst $(DATA)/books/%.txt,$(RESULT)/%.m_na_results,$(BOOKS))
@@ -22,6 +22,10 @@ GRAPHS=test/graphs/u_graph.jpg test/graphs/m_graph_all.jpg test/graphs/m_graph_n
 # utilities
 
 MKDIR_P=mkdir -p
+
+# values
+
+JACCARD_TRESHHOLD=0.65
 
 # rules
 
@@ -36,26 +40,26 @@ java:
 index: java dir_index $(INDEX)
 
 dir_index:
-	$(MKDIR_P) $(DATA)/index
+	$(MKDIR_P) $(DATA)/indexes
 
-$(DATA)/index/%.index: $(DATA)/books/%.txt
+$(DATA)/indexes/%.index: $(DATA)/books/%.txt
 	java -classpath bin index.FileToIndex $< > $@
 
 jaccard: java index $(DATA)/jaccard.txt jaccard_dir $(JACCARD)
 
 $(DATA)/jaccard.txt:
-	scripts/jaccard_distances.sh > $@
+	scripts/jaccard_distances.sh $(JACCARD_TRESHHOLD) > $@
 
 jaccard_dir:
-	$(MKDIR_P) $(DATA)/jaccard
+	$(MKDIR_P) $(DATA)/jaccards
 
-$(DATA)/jaccard/%.jaccard: $(DATA)/books/%.txt $(DATA)/jaccard.txt
+$(DATA)/jaccards/%.jaccard: $(DATA)/books/%.txt $(DATA)/jaccard.txt
 	scripts/jaccard_sort_1_book.sh $^ > $@
 
 jersey: java index jaccard
 	mvn clean install
 
-test: all dir_result $(U_TEST) $(M_TEST)
+test: java index dir_result $(U_TEST) $(M_TEST)
 
 dir_result:
 	$(MKDIR_P) $(RESULT)
@@ -69,7 +73,7 @@ $(RESULT)/%.m_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
 $(RESULT)/%.m_na_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
 	scripts/multiple_test_one_file_no_automata.sh $<
 
-graph: all test dir_graph $(GRAPHS)
+graph: java index test dir_graph $(GRAPHS)
 
 dir_graph:
 	$(MKDIR_P) test/graphs
@@ -89,8 +93,8 @@ clean:
 
 clean_data:
 	rm -f $(DATA)/jaccard.txt
-	rm -rf $(DATA)/index
-	rm -rf $(DATA)/jaccard
+	rm -rf $(DATA)/indexes
+	rm -rf $(DATA)/jaccards
 
 clean_test:
 	rm -rf $(RESULT)
