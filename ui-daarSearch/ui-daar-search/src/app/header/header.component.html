@@ -4,19 +4,19 @@
   <!-- This fills the remaining space of the current row -->
   <span class="example-fill-remaining-space"></span>
 
-  <span>-> DaarSearch library </span>
+  <span id="title">-> DaarSearch library </span>
   <span class="spacer"></span>
   <ul>
     <li *ngIf="!userIsAuthenticated">
-      <a mat-button (click)="login()">Login</a>
+      <a class="auths" mat-button (click)="login()">Login</a>
     </li>
 
     <li *ngIf="!userIsAuthenticated">
-      <a mat-button (click)="signup()">Signup</a>
+      <a class="auths" mat-button (click)="signup()">Signup</a>
     </li>
 
     <li *ngIf="userIsAuthenticated">
-      <button mat-button (click)="onLogout()">Logout</button>
+      <button class="auths" mat-button (click)="onLogout()">Logout</button>
     </li>
   </ul>
 </mat-toolbar>

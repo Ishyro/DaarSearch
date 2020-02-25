@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(public dialog: MatDialog, private authService: AuthService) { }
+  constructor(public dialog: MatDialog, private authService: AuthService) {}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
