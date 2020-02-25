@@ -25,5 +25,7 @@ export class SingupComponent implements OnInit {
       return;
     }
     this.authService.createUser(form.value.email, form.value.password);
+    this.dialogRef.close();
+
   }
 }
