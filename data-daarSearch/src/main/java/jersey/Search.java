@@ -2,6 +2,7 @@ package jersey;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -15,17 +16,21 @@ import java.util.ArrayList;
 import kmp.Facteur;
 
 @Path("/search")
-public class Search extends AbstractSearch {
+public class Search {
+  private List<String> books;
 
-  public Search(String query, List<String> books) {
-    super(query, books);
+  public Search(List<String> books) {
+    this.books = new ArrayList<String>(books);
   }
 
-  @Override
-  public void resolve() {
+  @GET
+  @Path("/{word}")
+  @Produces(MediaType.TEXT_PLAIN)
+  public String getMessage(@PathParam("word") String word) {
+    String result = "";
     for (String bookName : books) {
       try {
-        char[] facteur = query.toCharArray();
+        char[] facteur = word.toCharArray();
         int[] retenue = Facteur.createRetenue(facteur);
         List<char[]> lines = new ArrayList<char[]>();
         java.nio.file.Path path = FileSystems.getDefault().getPath(".", bookName);
@@ -42,5 +47,6 @@ public class Search extends AbstractSearch {
         System.out.println(e);
       }
     }
+      return result + "\n";
   }
 }
