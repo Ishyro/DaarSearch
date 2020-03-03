@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SearchComponent } from './search/search.component';
 import { FooterComponent } from './footer/footer.component';
-import { DocumentListComponent } from './document/document-list/document-list.component';
 import { DocumentViewComponent } from './document/document-view/document-view.component';
 import { DocumentRankComponent } from './document/document-rank/document-rank.component';
 import { DocumentRandomComponent } from './document/document-random/document-random.component';
@@ -39,7 +38,6 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     HeaderComponent,
     SearchComponent,
     FooterComponent,
-    DocumentListComponent,
     DocumentViewComponent,
     DocumentRankComponent,
     DocumentRandomComponent,
@@ -67,7 +65,8 @@ import { AuthInterceptor } from './auth/auth-interceptor';
   ],
   entryComponents: [
     LoginComponent,
-    SingupComponent
+    SingupComponent,
+    DocumentViewComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

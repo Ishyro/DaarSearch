@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DataSource } from '@angular/cdk/table';
 import { BookService } from '../book/books.service';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { DocumentViewComponent } from '../document/document-view/document-view.component';
 
 
 export interface BookElement {
@@ -28,7 +30,7 @@ export class SearchComponent implements OnInit {
   dataSource: any = [];
 
 
-  constructor(public bookService: BookService) {}
+  constructor(public dialog: MatDialog, public bookService: BookService) {}
 
   ngOnInit() {
   }
@@ -79,4 +81,16 @@ export class SearchComponent implements OnInit {
     return false;
   }
 
+  show(book: string) {
+    console.log(book);
+
+    const dialogRef = this.dialog.open(DocumentViewComponent, {
+      width: '400px',
+      data: {book}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 }
