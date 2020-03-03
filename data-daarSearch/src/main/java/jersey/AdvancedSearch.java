@@ -27,8 +27,8 @@ public class AdvancedSearch {
   @GET
   @Path("/word")
   @Produces(MediaType.APPLICATION_JSON)
-  public String getMessage(@PathParam("word") String word) {
-    String result = "[\n";
+  public List<String> getMessage(@PathParam("word") String word) {
+    List<String> result = new ArrayList<String>();
     for (String bookName : books) {
       try {
         RegEx regex = new RegEx(word);
@@ -37,7 +37,7 @@ public class AdvancedSearch {
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (String line : lines) {
           if (automata.accept(line) != null) {
-            result += "\t{\n\t\tbookName: \"" + bookName + "\",\n\t\tbookContent: \"" + word + "\"\n\t}" + (books.size() == books.lastIndexOf(bookName) + 1 ? "\n" : ",\n");
+            result.add("{\n\tbookName: \"" + bookName + "\",\n\tbookContent: \"" + word + "\"\n\t}");
             break;
           }
         }
@@ -46,6 +46,6 @@ public class AdvancedSearch {
         System.out.println(e);
       }
     }
-    return result + "]\n";
+    return result;
   }
 }

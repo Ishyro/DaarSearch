@@ -26,8 +26,8 @@ public class Search {
   @GET
   @Path("/word")
   @Produces(MediaType.APPLICATION_JSON)
-  public String getMessage(@PathParam("word") String word) {
-    String result = "[\n";
+  public List<String> getMessage(@PathParam("word") String word) {
+    List<String> result = new ArrayList<String>();
     for (String bookName : books) {
       try {
         char[] facteur = word.toCharArray();
@@ -40,7 +40,7 @@ public class Search {
         }
         for (int i = 0; i < lines.size(); i++) {
           if (Facteur.matchingAlgo(facteur, retenue, lines.get(i)) != -1) {
-            result += "\t{\n\t\tbookName: \"" + bookName + "\",\n\t\tbookContent: \"" + word + "\"\n\t}" + (books.size() == books.lastIndexOf(bookName) + 1 ? "\n" : ",\n");
+            result.add("{\n\tbookName: \"" + bookName + "\",\n\tbookContent: \"" + word + "\"\n\t}");
             break;
           }
         }
@@ -49,6 +49,6 @@ public class Search {
         System.out.println(e);
       }
     }
-      return result + "]\n";
+      return result;
   }
 }
