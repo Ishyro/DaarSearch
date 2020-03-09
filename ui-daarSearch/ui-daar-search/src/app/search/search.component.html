@@ -1,0 +1,38 @@
+<mat-card>
+  <h2><em>Type the name of a book here, or some regex !</em></h2>
+  <form (submit)="search(searchForm)" #searchForm="ngForm">
+    <mat-form-field>
+      <input matInput name="book" placeholder="..." ngModel #bookInput="ngModel" required book>
+      <mat-error *ngIf="bookInput.invalid">No book is given !</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="" type="submit">search </button>
+  </form>
+
+
+  <h5>your Searches..</h5>
+
+
+  <!-- here we're gonna implement the document list and the paginator-->
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z3">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element" (click)="show(element)"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="content">
+      <th mat-header-cell *matHeaderCellDef> Content </th>
+      <td mat-cell *matCellDef="let element"> {{element.content}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <hr>
+
+  <app-document-random></app-document-random>
+
+
+</mat-card>

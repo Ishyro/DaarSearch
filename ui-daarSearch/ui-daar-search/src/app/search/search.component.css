@@ -1,0 +1,25 @@
+
+mat-form-field {
+  display: block;
+  margin-bottom: 10px;
+}
+
+mat-card {
+  padding: 3%;
+  margin: 1%;
+}
+
+/* To display a border for the input */
+input {
+
+  border-radius: 10px;
+  background: transparent;
+  background-color: transparent;
+  padding: 0%;
+  margin-left: 2%;
+
+}
+
+table {
+  width: 100%;
+}
