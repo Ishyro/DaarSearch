@@ -25,10 +25,10 @@ public class AdvancedSearch {
   }
 
   @GET
-  @Path("/{word}")
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getMessage(@PathParam("word") String word) {
-    String result = "";
+  @Path("/word")
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<String> getMessage(@PathParam("word") String word) {
+    List<String> result = new ArrayList<String>();
     for (String bookName : books) {
       try {
         RegEx regex = new RegEx(word);
@@ -36,14 +36,16 @@ public class AdvancedSearch {
         java.nio.file.Path path = FileSystems.getDefault().getPath(".", bookName);
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (String line : lines) {
-          if (automata.accept(line) != null)
-            result += bookName + ";";
+          if (automata.accept(line) != null) {
+            result.add("{\n\tbookName: \"" + bookName + "\",\n\tbookContent: \"" + word + "\"\n\t}");
+            break;
+          }
         }
       }
       catch(Exception e) {
         System.out.println(e);
       }
     }
-  return result + "\n";
+    return result;
   }
 }

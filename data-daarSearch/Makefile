@@ -7,7 +7,8 @@ JOPTIONS=-classpath src/main/java -d bin
 
 JAVA=$(wildcard src/main/java/automata/*.java) \
 	$(wildcard src/main/java/index/*.java) \
-	$(wildcard src/main/java/kmp/*.java)
+	$(wildcard src/main/java/kmp/*.java) \
+	$(wildcard src/main/java/graph/*.java)
 CLASS=$(patsubst src/main/java/%.java,bin/%.class,$(JAVA)) bin/automata/RegExTree.class
 
 BOOKS=$(wildcard $(DATA)/books/*.txt)
@@ -26,6 +27,7 @@ MKDIR_P=mkdir -p
 # values
 
 JACCARD_TRESHHOLD=0.65
+NB_BOOKS=15
 
 # rules
 
@@ -34,7 +36,7 @@ all: dir_bin java index jaccard jersey
 dir_bin:
 	$(MKDIR_P) bin
 
-java:
+java: dir_bin
 	javac $(JOPTIONS) $(JAVA)
 
 index: java dir_index $(INDEX)
@@ -55,6 +57,11 @@ jaccard_dir:
 
 $(DATA)/jaccards/%.jaccard: $(DATA)/books/%.txt $(DATA)/jaccard.txt
 	scripts/jaccard_sort_1_book.sh $^ > $@
+
+betweenness: $(DATA)/betweenness.txt
+
+$(DATA)/betweenness.txt: $(DATA)/jaccard.txt
+	java -classpath bin graph.Graph $< $(NB_BOOKS) > $@
 
 jersey: java index jaccard
 	mvn clean install

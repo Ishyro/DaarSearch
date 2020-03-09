@@ -3,6 +3,7 @@ data-daarSearch/target
 data-daarSearch/src/main/resources/indexes
 data-daarSearch/src/main/resources/jaccards
 data-daarSearch/src/main/resources/jaccard.txt
+data-daarSearch/src/main/resources/betweenness.txt
 data-daarSearch/test/results
 data-daarSearch/test/graphs
 data-daarSearch/dependency-reduced-pom.xml
