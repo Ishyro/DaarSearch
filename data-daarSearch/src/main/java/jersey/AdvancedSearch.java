@@ -31,13 +31,14 @@ public class AdvancedSearch {
     List<String> result = new ArrayList<String>();
     for (String bookName : books) {
       try {
+        String nameOnly = bookName.substring("src/main/resources/indexes/".length(), bookName.lastIndexOf('.'));
         RegEx regex = new RegEx(word);
         Automata automata = Automata.fromEpsilonAutomata(Automata.fromRegExTree(RegEx.parse()));
         java.nio.file.Path path = FileSystems.getDefault().getPath(".", bookName);
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (String line : lines) {
           if (automata.accept(line) != null) {
-            result.add("{\n\tbookName: \"" + bookName + "\",\n\tbookContent: \"" + word + "\"\n\t}");
+            result.add("{\n\tbookName: \"" + nameOnly + "\",\n\tbookContent: \"" + word + "\"\n\t}");
             break;
           }
         }

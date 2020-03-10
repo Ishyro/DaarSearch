@@ -26,7 +26,7 @@ MKDIR_P=mkdir -p
 
 # values
 
-JACCARD_TRESHHOLD=0.65
+JACCARD_TRESHHOLD=0.75
 NB_BOOKS=15
 
 # rules
@@ -58,10 +58,10 @@ jaccard_dir:
 $(DATA)/jaccards/%.jaccard: $(DATA)/books/%.txt $(DATA)/jaccard.txt
 	scripts/jaccard_sort_1_book.sh $^ > $@
 
-betweenness: $(DATA)/betweenness.txt
+betweenness: java jaccard $(DATA)/betweenness.txt
 
 $(DATA)/betweenness.txt: $(DATA)/jaccard.txt
-	java -classpath bin graph.Graph $< $(NB_BOOKS) > $@
+	java -classpath bin graph.Graph $< $(NB_BOOKS) #> $@
 
 jersey: java index jaccard
 	mvn clean install

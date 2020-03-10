@@ -3,6 +3,7 @@ package index;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.IOException;
 import java.util.List;
 import java.nio.file.Files;
@@ -115,7 +116,7 @@ public class FileToIndex {
         ret.entrySet()
         .stream()
         .parallel()
-        .sorted(Map.Entry.comparingByValue())
+        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
         .map( (Map.Entry<String, Integer> entry) -> {
           return entry.getKey() + " " + entry.getValue();
         })

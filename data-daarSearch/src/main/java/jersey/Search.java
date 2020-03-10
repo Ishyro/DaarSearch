@@ -30,6 +30,7 @@ public class Search {
     List<String> result = new ArrayList<String>();
     for (String bookName : books) {
       try {
+        String nameOnly = bookName.substring("src/main/resources/indexes/".length(), bookName.lastIndexOf('.'));
         char[] facteur = word.toCharArray();
         int[] retenue = Facteur.createRetenue(facteur);
         List<char[]> lines = new ArrayList<char[]>();
@@ -40,7 +41,7 @@ public class Search {
         }
         for (int i = 0; i < lines.size(); i++) {
           if (Facteur.matchingAlgo(facteur, retenue, lines.get(i)) != -1) {
-            result.add("{\n\tbookName: \"" + bookName + "\",\n\tbookContent: \"" + word + "\"\n\t}");
+            result.add("{\n\tbookName: \"" + nameOnly + "\",\n\tbookContent: \"" + word + "\"\n\t}");
             break;
           }
         }

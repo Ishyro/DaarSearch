@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 import java.util.Map;
 import java.io.IOException;
@@ -43,31 +44,43 @@ public class Graph {
   private Graph(String filename, int size) {
     try {
       weights = new double[size][size];
-      Arrays.fill(weights, Double.POSITIVE_INFINITY);
-      books = new ArrayList<String>(size);
+      for (int i = 0; i < size; i++) {
+        Arrays.fill(weights[i], Double.POSITIVE_INFINITY);
+      }
+      books = new ArrayList<String>();
       paths = new ArrayList<List<List<Integer>>>(size);
+      for (int i = 0; i < size; i++) {
+        paths.add(new ArrayList<List<Integer>>(size));
+        for (int j = 0; j < size; j++) {
+          paths.get(i).add(new ArrayList<Integer>());
+        }
+      }
       betweenness = new HashMap<String,Double>(size);
       Map<String,Integer> map = new HashMap<String,Integer>(size);
       Path path = FileSystems.getDefault().getPath(".", filename);
       List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
       for (String line : lines) {
-        if (line.charAt(0) == '#') {
-          continue;
-        }
-        String[] str = line.split("[ ]");
+        String[] str = line.split("\\s+");
         if (!map.containsKey(str[0])) {
           map.put(str[0],map.size());
+          books.add(str[0]);
         }
         if (!map.containsKey(str[1])) {
           map.put(str[1],map.size());
+          books.add(str[1]);
         }
-        books.set(map.get(str[0]),str[0]);
-        books.set(map.get(str[1]),str[1]);
         weights[map.get(str[0])][map.get(str[1])] = Double.parseDouble(str[2]);
         weights[map.get(str[1])][map.get(str[0])] = Double.parseDouble(str[2]);
       }
+      map.clear();
       Floyd_Warshall();
-      for (int v = 0; v < size; v++) {
+      for (int i=0;i<books.size();i++) {
+        for (int j=0;j<books.size();j++) {
+          System.out.print(paths.get(i).get(j) + "\t");
+        }
+        System.out.println();
+      }
+      for (int v = 0; v < books.size(); v++) {
         betweenness.put(books.get(v),betweenness(v));
       }
     }
@@ -80,23 +93,31 @@ public class Graph {
     double[][] dists=new double[books.size()][books.size()];
     for (int i=0;i<books.size();i++) {
       for (int j=0;j<books.size();j++) {
-        paths.get(i).set(j,new ArrayList<Integer>());
         paths.get(i).get(j).add(j);
-      	dists[i][j] = weights[i][j];
+        if (i != j) {
+          dists[i][j] = weights[i][j];
+        }
+        else {
+          dists[i][j] = 0.;
+        }
       }
     }
-    for (int k = 1; k < books.size(); k++) {
+    for (int k = 0; k < books.size(); k++) {
     	for (int i = 0; i < books.size(); i++) {
     		for (int j = 0; j < books.size(); j++) {
     			double next = dists[i][k] + dists[k][j];
-          if (next > 0. && next == dists[i][j]) {
-            paths.get(i).get(j).addAll(paths.get(i).get(k));
+          if (i != j && i != k && j != k && next != Double.POSITIVE_INFINITY) {
+            if (next == dists[i][j]) {
+              System.out.println(i + " " + j + " " + k);
+              paths.get(i).get(j).addAll(paths.get(i).get(k));
+            }
+      			else if (next < dists[i][j]) {
+      				dists[i][j] = next;
+      				paths.get(i).get(j).clear();
+              paths.get(i).get(j).addAll(paths.get(i).get(k));
+      			}
           }
-    			else if (next > 0. && next < dists[i][j]) {
-    				dists[i][j] = next;
-    				paths.get(i).get(j).clear();
-            paths.get(i).get(j).addAll(paths.get(i).get(k));
-    			}
+          paths.get(i).set(j, paths.get(i).get(j).stream().distinct().collect(Collectors.toList()));
     		}
     	}
     }
@@ -108,10 +129,14 @@ public class Graph {
       for (int j=0;j<books.size();j++) {
         if (i != j && i != v && j != v) {
           int pathsThroughV = 0;
-          List<Integer> start = new ArrayList<Integer>();
-          List<List<Integer>> IJPaths = getPaths(i,j,start);
+          List<List<Integer>> IJPaths = getPaths(i,j);
+          if (IJPaths.isEmpty()) {
+            //System.out.println(books.get(i) + " " + books.get(j));
+            continue;
+          }
           for (List<Integer> path : IJPaths) {
             if (path.contains(v)) {
+              System.out.println("oui");
               pathsThroughV++;
             }
           }
@@ -122,18 +147,70 @@ public class Graph {
     return result;
   }
 
-  private List<List<Integer>> getPaths(int i, int j, List<Integer> offset) {
-    List<Integer> current = new ArrayList<Integer>(offset);
-    current.add(i);
-    List<Integer> path = paths.get(i).get(j);
+  private List<List<Integer>> getPaths(int i, int j) {
+    List<List<Integer>> startPaths = new ArrayList<List<Integer>>();
     List<List<Integer>> result = new ArrayList<List<Integer>>();
-    while(!path.contains(j)) {
-      for (int next : path) {
-        result.addAll(getPaths(next,j,current));
+    List<Integer> startPath = new ArrayList<Integer>();
+    startPath.add(i);
+    startPaths.add(startPath);
+    List<List<Integer>> temp = getPathsStep(j,startPaths);
+    for (List<Integer> path : temp) {
+      // TODO
+      System.out.println(path);
+      if (path.size() > 2) {
+        System.out.println(path);
+      }
+      if (path.get(path.size() - 1) == j) {
+        result.add(path);
       }
     }
-    current.add(j);
-    result.add(current);
     return result;
+  }
+
+  private List<List<Integer>> getPathsStep(int j, List<List<Integer>> current_paths) {
+    // TODO
+    boolean nochange = true;
+    List<List<Integer>> new_paths = new ArrayList<List<Integer>>();
+    for (int n = 0; n < current_paths.size(); n++) {
+      if (!current_paths.get(n).contains(j)) {
+        if (paths.get(n).get(j).contains(j)) {
+          current_paths.get(n).add(j);
+          nochange=false;
+        }
+        else {
+          if (!current_paths.get(n).contains(paths.get(n).get(j).get(0))) {
+            current_paths.get(n).add(paths.get(n).get(j).get(0));
+            nochange=false;
+          }
+          if (paths.get(n).get(j).size() > 1) {
+            for (int l = 1; l < paths.get(n).get(j).size(); l++) {
+              if (!current_paths.get(n).contains(paths.get(n).get(j).get(l))) {
+                List<Integer> new_path = new ArrayList<Integer>(current_paths.get(n));
+                new_path.add(paths.get(n).get(j).get(l));
+                new_paths.add(new_path);
+                nochange=false;
+              }
+            }
+          }
+        }
+      }
+    }
+    if (nochange) {
+      return current_paths;
+    }
+    else {
+      current_paths.addAll(new_paths);
+      return getPathsStep(j, current_paths);
+    }
+  }
+
+  private void printPaths(List<List<Integer>> toprint) {
+    for (List<Integer> path : toprint) {
+      String str = "";
+      for (int node : path) {
+        str += (node + " ");
+      }
+      System.out.println(str);
+    }
   }
 }
