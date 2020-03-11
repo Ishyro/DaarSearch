@@ -26,12 +26,13 @@ MKDIR_P=mkdir -p
 
 # values
 
-JACCARD_TRESHHOLD=0.75
+JACCARD_TRESHHOLD=0.7
+JACCARD_PRECISION=0
 NB_BOOKS=15
 
 # rules
 
-all: dir_bin java index jaccard jersey
+all: dir_bin java index jaccard betweenness jersey
 
 dir_bin:
 	$(MKDIR_P) bin
@@ -61,9 +62,9 @@ $(DATA)/jaccards/%.jaccard: $(DATA)/books/%.txt $(DATA)/jaccard.txt
 betweenness: java jaccard $(DATA)/betweenness.txt
 
 $(DATA)/betweenness.txt: $(DATA)/jaccard.txt
-	java -classpath bin graph.Graph $< $(NB_BOOKS) #> $@
+	java -classpath bin graph.Graph $< $(NB_BOOKS) $(JACCARD_PRECISION) > $@
 
-jersey: java index jaccard
+jersey: java index jaccard betweenness
 	mvn clean install
 
 test: java index dir_result $(U_TEST) $(M_TEST)

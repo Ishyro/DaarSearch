@@ -16,7 +16,7 @@ done | awk '($1,$2) in seen || ($2,$1) in seen {next} {seen[$1,$2]; print}' > $t
 while IFS= read -r line
 do
   java -classpath ${CLASSPATH} index.Jaccard $line
-done < $temp | awk -v threshhold="$threshold" '{ if ($3 <= threshhold) printf ("%-24s\t%-24s\t%-24s\n", $1, $2, $3) }'
+done < $temp | awk -v threshhold="$threshold" '{ if ($3 <= threshhold) printf ("%-29s %-29s %s\n", $1, $2, $3) }'
 
 rm -f $temp
 

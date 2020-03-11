@@ -118,7 +118,7 @@ public class FileToIndex {
         .parallel()
         .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
         .map( (Map.Entry<String, Integer> entry) -> {
-          return entry.getKey() + " " + entry.getValue();
+          return String.format("%-19s %d",entry.getKey(),entry.getValue());
         })
         .collect(Collectors.toList());
       result.add(0,"# " + nbWords);

@@ -42,7 +42,7 @@ public class Trie {
       for (String line : text) {
         List<Integer> nextTextIndices = new ArrayList<Integer>();
         List<Integer> nextLineIndices = new ArrayList<Integer>();
-        String[] parsed = line.split("[ ]");
+        String[] parsed = line.split("\\s+");
         for (int i = 2; i < parsed.length; i+=2) {
           nextTextIndices.add(Integer.valueOf(parsed[i]));
           nextLineIndices.add(Integer.valueOf(parsed[i + 1]));
