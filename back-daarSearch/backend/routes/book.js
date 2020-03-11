@@ -1,5 +1,5 @@
 const express = require("express");
-
+const request = require("request");
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
 
@@ -9,26 +9,30 @@ const checkAuth = require("../middleware/check-auth");
 
 router.get("/:name", checkAuth, (req, res, next) => {
 
-    // make the call to jersey/jetty api to get the right book..
-    console.log("requesting a book with normal string ");
-    const books = [
-        { name: "book1_normalString", content: "content of book 1_normalString" },
-        { name: "book2_normalString", content: "content of book 2_normalString" },
-        { name: "book3_normalString", content: "content of book 3_normalString" }
-    ];
-    res.status(200).json(books);
+
+    request('http://localhost:8080/book-library/books-normal/'+req.body.name, (error, response, body)=> {
+        if (!error && response.statusCode === 200) {
+          const books = JSON.parse(body)
+          console.log("Got a response: ", books)
+          res.status(200).json(books);
+        } else {
+          console.log("Got an error: ", error, ", status code: ", response.statusCode)
+        }
+      })
+
 });
 
 router.get("/regex/:name", checkAuth, (req, res, next) => {
 
-    // make the call to jersey/jetty api to get the right book with regex..
-    console.log("requesting a book with regex ");
-    const books = [
-        { name: "book1_regex", content: "content of book 1_regex" },
-        { name: "book2_regex", content: "content of book 2_regex" },
-        { name: "book3_regex", content: "content of book 3_regex" }
-    ];
-    res.status(200).json(books);
+    request('http://localhost:8080/book-library/books-regex/'+req.body.name, (error, response, body)=> {
+        if (!error && response.statusCode === 200) {
+          const books = JSON.parse(body)
+          console.log("Got a response: ", books)
+          res.status(200).json(books);
+        } else {
+          console.log("Got an error: ", error, ", status code: ", response.statusCode)
+        }
+      })
 });
 
 module.exports = router;
