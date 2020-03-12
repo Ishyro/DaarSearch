@@ -9,7 +9,6 @@ JAVA=$(wildcard src/main/java/automata/*.java) \
 	$(wildcard src/main/java/index/*.java) \
 	$(wildcard src/main/java/kmp/*.java) \
 	$(wildcard src/main/java/graph/*.java)
-CLASS=$(patsubst src/main/java/%.java,bin/%.class,$(JAVA)) bin/automata/RegExTree.class
 
 BOOKS=$(wildcard $(DATA)/books/*.txt)
 INDEX=$(patsubst $(DATA)/books/%.txt,$(DATA)/indexes/%.index,$(BOOKS))
@@ -72,13 +71,13 @@ test: java index dir_result $(U_TEST) $(M_TEST)
 dir_result:
 	$(MKDIR_P) $(RESULT)
 
-$(RESULT)/%.u_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
+$(RESULT)/%.u_results: $(DATA)/books/%.txt $(DATA)/index/%.index
 	scripts/unique_test_one_file.sh $<
 
-$(RESULT)/%.m_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
+$(RESULT)/%.m_results: $(DATA)/books/%.txt $(DATA)/index/%.index
 	scripts/multiple_test_one_file.sh $<
 
-$(RESULT)/%.m_na_results: $(DATA)/books/%.txt $(CLASS) $(DATA)/index/%.index
+$(RESULT)/%.m_na_results: $(DATA)/books/%.txt $(DATA)/index/%.index
 	scripts/multiple_test_one_file_no_automata.sh $<
 
 graph: java index test dir_graph $(GRAPHS)
@@ -101,6 +100,7 @@ clean:
 
 clean_data:
 	rm -f $(DATA)/jaccard.txt
+	rm -f $(DATA)/betweenness.txt
 	rm -rf $(DATA)/indexes
 	rm -rf $(DATA)/jaccards
 

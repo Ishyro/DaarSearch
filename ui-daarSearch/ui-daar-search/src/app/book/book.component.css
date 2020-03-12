@@ -1,0 +1,21 @@
+
+#book-block {
+
+
+}
+
+#book-image {
+
+}
+
+#book-title {
+  font-size: 15px;
+  margin-top: 2%;
+  font-weight: 800;
+  width: 140px;
+}
+
+img {
+  width: 150px;
+  height: 250px;
+}

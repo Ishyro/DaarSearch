@@ -1,0 +1,22 @@
+<mat-toolbar color="">
+
+
+  <!-- This fills the remaining space of the current row -->
+  <span class="example-fill-remaining-space"></span>
+
+  <span id="title">-> DaarSearch library </span>
+  <span class="spacer"></span>
+  <ul>
+    <li *ngIf="!userIsAuthenticated">
+      <a class="auths" mat-button (click)="login()">Login</a>
+    </li>
+
+    <li *ngIf="!userIsAuthenticated">
+      <a class="auths" mat-button (click)="signup()">Signup</a>
+    </li>
+
+    <li *ngIf="userIsAuthenticated">
+      <button class="auths" mat-button (click)="onLogout()">Logout</button>
+    </li>
+  </ul>
+</mat-toolbar>

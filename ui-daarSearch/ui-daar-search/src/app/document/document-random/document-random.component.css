@@ -1,0 +1,10 @@
+
+mat-card {
+  margin: 1%;
+  padding: 2%;
+}
+
+app-book {
+  display: inline-block;
+  margin-right: 3%;
+}
