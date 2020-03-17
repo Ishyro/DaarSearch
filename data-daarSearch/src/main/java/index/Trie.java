@@ -38,7 +38,7 @@ public class Trie {
     lineIndices = new ArrayList<Integer>();
     try {
       Path path = FileSystems.getDefault().getPath(".", filename);
-      List<String> text = Files.readAllLines(path, StandardCharsets.UTF_8);
+      List<String> text = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
       for (String line : text) {
         List<Integer> nextTextIndices = new ArrayList<Integer>();
         List<Integer> nextLineIndices = new ArrayList<Integer>();

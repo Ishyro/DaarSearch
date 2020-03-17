@@ -35,7 +35,7 @@ public class AdvancedSearch {
         RegEx regex = new RegEx(word);
         Automata automata = Automata.fromEpsilonAutomata(Automata.fromRegExTree(RegEx.parse()));
         java.nio.file.Path path = FileSystems.getDefault().getPath(".", bookName);
-        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        List<String> lines = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
         for (String line : lines) {
           if (automata.accept(line) != null) {
             result.add("{\n\tbookName: \"" + nameOnly + "\",\n\tbookContent: \"" + word + "\"\n\t}");

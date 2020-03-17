@@ -58,7 +58,7 @@ public class Graph {
       betweenness = new HashMap<String,Double>(size);
       Map<String,Integer> map = new HashMap<String,Integer>(size);
       Path path = FileSystems.getDefault().getPath(".", filename);
-      List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+      List<String> lines = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
       for (String line : lines) {
         String[] str = line.split("\\s+");
         if (!map.containsKey(str[0])) {

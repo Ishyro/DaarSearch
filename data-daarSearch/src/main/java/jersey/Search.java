@@ -35,7 +35,7 @@ public class Search {
         int[] retenue = Facteur.createRetenue(facteur);
         List<char[]> lines = new ArrayList<char[]>();
         java.nio.file.Path path = FileSystems.getDefault().getPath(".", bookName);
-        List<String> text = Files.readAllLines(path, StandardCharsets.UTF_8);
+        List<String> text = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
         for (String str : text) {
           lines.add(str.toCharArray());
         }

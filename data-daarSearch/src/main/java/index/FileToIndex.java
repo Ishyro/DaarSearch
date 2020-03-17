@@ -25,7 +25,7 @@ public class FileToIndex {
     }
     List<String> blacklist;
     try {
-      blacklist = Files.readAllLines(BLACKLIST_PATH, StandardCharsets.UTF_8);
+      blacklist = Files.readAllLines(BLACKLIST_PATH, StandardCharsets.ISO_8859_1);
     }
     catch (Exception e) {
       blacklist = new ArrayList<String>();
@@ -40,7 +40,7 @@ public class FileToIndex {
       // String is the word, List is Number of appearances, (line of appearance, char of appearance) * n
       HashMap<String, List<Integer>> ret = new HashMap<String, List<Integer>>();
       Path path = FileSystems.getDefault().getPath(".", filename);
-      List<String> text = Files.readAllLines(path, StandardCharsets.UTF_8);
+      List<String> text = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
       int textIndice = 0;
       for (String str : text) {
         String[] temp = str.split("[^a-zA-Z]");
@@ -93,7 +93,7 @@ public class FileToIndex {
       long nbWords = 0;
       HashMap<String, Integer> ret = new HashMap<String, Integer>();
       Path path = FileSystems.getDefault().getPath(".", filename);
-      List<String> text = Files.readAllLines(path, StandardCharsets.UTF_8);
+      List<String> text = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
       for (String str : text) {
         String[] temp = str.split("[^a-zA-Z]");
         for (int i = 0; i < temp.length; i++) {
