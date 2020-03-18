@@ -2,9 +2,18 @@
   <h2><em>Type the name of a book here, or some regex !</em></h2>
   <form (submit)="search(searchForm)" #searchForm="ngForm">
     <mat-form-field>
-      <input matInput name="book" placeholder="..." ngModel #bookInput="ngModel" required book>
+      <input matInput name="book" placeholder="..."
+      [matAutocomplete]="auto"  ngModel #bookInput="ngModel" (click)="refresh()" required book>
       <mat-error *ngIf="bookInput.invalid">No book is given !</mat-error>
+
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">{{suggestion}}</mat-option>
+      </mat-autocomplete>
     </mat-form-field>
+
+
+
+
     <button mat-raised-button color="" type="submit">search </button>
   </form>
 

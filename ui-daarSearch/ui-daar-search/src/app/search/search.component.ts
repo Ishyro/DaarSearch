@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataSource } from '@angular/cdk/table';
 import { BookService } from '../book/books.service';
+import { SearchService}  from './search.service';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { DocumentViewComponent } from '../document/document-view/document-view.component';
@@ -28,11 +28,29 @@ export class SearchComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'content'];
   dataSource: any = [];
+  suggestions: string[] = [];
 
-
-  constructor(public dialog: MatDialog, public bookService: BookService) {}
+  constructor(public dialog: MatDialog, public bookService: BookService, public searchService: SearchService) {}
 
   ngOnInit() {
+    // get the old history from the database..
+    console.log("init logs !");
+    //this.suggestions = this.searchService.getSearches();
+    //console.log(this.suggestions);
+  }
+
+  refresh()  {
+    console.log("refresh logs");
+
+    //this.suggestions = this.searchService.getSearches();
+    this.searchService.getSearches().subscribe( res => {
+      console.log("aloha : "+res);
+      this.updateSuggestion(res);
+    });
+  }
+
+  updateSuggestion(suggestions) {
+    this.suggestions = suggestions.reverse().slice(0,3);
   }
 
   search(form: NgForm) {
@@ -41,8 +59,14 @@ export class SearchComponent implements OnInit {
     if (searchingName) {
       if ( this.isRegex(searchingName)) {
         this.dataSource = this.bookService.getRegexBooks(form.value.book);
+        this.searchService.addSearches(form.value.book);
+        //this.suggestions = this.searchService.getSearches();
+
       } else {
         this.dataSource = this.bookService.getBooks(form.value.book);
+        this.searchService.addSearches(form.value.book);
+        //this.suggestions = this.searchService.getSearches();
+
       }
     }
   }
