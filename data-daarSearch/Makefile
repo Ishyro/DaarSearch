@@ -12,7 +12,6 @@ JAVA=$(wildcard src/main/java/automata/*.java) \
 
 BOOKS=$(wildcard data/books/*.txt)
 INDEX=$(patsubst data/books/%.txt,$(DATA)/indexes/%.index,$(BOOKS))
-JACCARD=$(patsubst data/books/%.txt,$(DATA)/jaccards/%.jaccard,$(BOOKS))
 
 # utilities
 
@@ -20,8 +19,8 @@ MKDIR_P=mkdir -p
 
 # values
 
-JACCARD_TRESHHOLD=0.75
-JACCARD_PRECISION=0.005
+JACCARD_TRESHHOLD=0.70
+JACCARD_PRECISION=0.0025
 NB_BOOKS=15
 
 # rules
