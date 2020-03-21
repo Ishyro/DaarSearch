@@ -18,19 +18,16 @@ import automata.Automata;
 
 @Path("/advancedsearch")
 public class AdvancedSearch {
-  private List<String> books;
-
-  public AdvancedSearch(List<String> books) {
-    this.books = new ArrayList<String>(books);
-  }
 
   @GET
   @Path("/word")
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getMessage(@PathParam("word") String word) {
     List<String> result = new ArrayList<String>();
-    for (String bookName : books) {
-      try {
+    try {
+      java.nio.file.Path pathBookName = FileSystems.getDefault().getPath(".", "src/main/resources/books_list.txt");
+      List<String> books = Files.readAllLines(pathBookName, StandardCharsets.ISO_8859_1);
+      for (String bookName : books) {
         String nameOnly = bookName.substring("src/main/resources/indexes/".length(), bookName.lastIndexOf('.'));
         RegEx regex = new RegEx(word);
         Automata automata = Automata.fromEpsilonAutomata(Automata.fromRegExTree(RegEx.parse()));
@@ -43,9 +40,9 @@ public class AdvancedSearch {
           }
         }
       }
-      catch(Exception e) {
-        System.out.println(e);
-      }
+    }
+    catch(Exception e) {
+      System.out.println(e);
     }
     return result;
   }

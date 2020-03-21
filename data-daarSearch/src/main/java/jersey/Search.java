@@ -17,19 +17,16 @@ import kmp.Facteur;
 
 @Path("/search")
 public class Search {
-  private List<String> books;
-
-  public Search(List<String> books) {
-    this.books = new ArrayList<String>(books);
-  }
 
   @GET
   @Path("/word")
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getMessage(@PathParam("word") String word) {
     List<String> result = new ArrayList<String>();
-    for (String bookName : books) {
-      try {
+    try {
+      java.nio.file.Path pathBookName = FileSystems.getDefault().getPath(".", "src/main/resources/books_list.txt");
+      List<String> books = Files.readAllLines(pathBookName, StandardCharsets.ISO_8859_1);
+      for (String bookName : books) {
         String nameOnly = bookName.substring("src/main/resources/indexes/".length(), bookName.lastIndexOf('.'));
         char[] facteur = word.toCharArray();
         int[] retenue = Facteur.createRetenue(facteur);
@@ -46,10 +43,10 @@ public class Search {
           }
         }
       }
-      catch(Exception e) {
-        System.out.println(e);
-      }
     }
-      return result;
+    catch(Exception e) {
+      System.out.println(e);
+    }
+    return result;
   }
 }

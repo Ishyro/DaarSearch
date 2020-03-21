@@ -25,7 +25,7 @@ NB_BOOKS=1000
 
 # rules
 
-all: dir_bin java index jaccard betweenness jersey
+all: dir_bin java index jaccard betweenness booklist jersey
 
 dir_bin:
 	$(MKDIR_P) bin
@@ -51,7 +51,10 @@ betweenness: java jaccard $(DATA)/betweenness.txt
 $(DATA)/betweenness.txt: $(DATA)/jaccard.txt
 	java -classpath bin graph.Graph $< $(NB_BOOKS) $(JACCARD_PRECISION) > $@
 
-jersey: java index jaccard betweenness
+booklist: index
+	scripts/booklist.sh > $(DATA)/books_list.txt
+
+jersey: java index jaccard betweenness booklist
 	mvn clean install
 
 clean:
