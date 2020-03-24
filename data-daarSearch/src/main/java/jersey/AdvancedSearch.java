@@ -20,7 +20,7 @@ import automata.Automata;
 public class AdvancedSearch {
 
   @GET
-  @Path("/word")
+  @Path("/{word}")
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getMessage(@PathParam("word") String word) {
     List<String> result = new ArrayList<String>();

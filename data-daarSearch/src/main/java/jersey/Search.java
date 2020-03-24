@@ -19,7 +19,7 @@ import kmp.Facteur;
 public class Search {
 
   @GET
-  @Path("/word")
+  @Path("/{word}")
   @Produces(MediaType.APPLICATION_JSON)
   public List<String> getMessage(@PathParam("word") String word) {
     List<String> result = new ArrayList<String>();
