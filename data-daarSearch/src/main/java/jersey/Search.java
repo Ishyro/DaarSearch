@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import java.nio.file.Files;
 import java.nio.file.FileSystems;
@@ -24,7 +25,7 @@ public class Search {
   @GET
   @Path("/{word}")
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Book> getMessage(@PathParam("word") String word) {
+  public Response getMessage(@PathParam("word") String word) {
     List<Book> result = new ArrayList<Book>();
     try {
       // this file is already sorted by betweenness
@@ -51,7 +52,9 @@ public class Search {
     catch(Exception e) {
       System.out.println(e);
     }
-    return result;
+    return Response.status(Response.Status.OK)
+                .entity(result)
+                .build();
   }
 
   private void addBook(String name, List<Book> result) throws IOException, SecurityException {
