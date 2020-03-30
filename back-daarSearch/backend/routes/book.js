@@ -10,7 +10,7 @@ const checkAuth = require("../middleware/check-auth");
 router.get("/:name", checkAuth, (req, res, next) => {
 
 
-    request('http://localhost:8080/book-library/books-normal/'+req.body.name, (error, response, body)=> {
+    request('http://localhost:8080/search/'+req.body.name, (error, response, body)=> {
         if (!error && response.statusCode === 200) {
           const books = JSON.parse(body)
           console.log("Got a response: ", books)
@@ -24,7 +24,7 @@ router.get("/:name", checkAuth, (req, res, next) => {
 
 router.get("/regex/:name", checkAuth, (req, res, next) => {
 
-    request('http://localhost:8080/book-library/books-regex/'+req.body.name, (error, response, body)=> {
+    request('http://localhost:8080/advancedSearch/'+req.body.name, (error, response, body)=> {
         if (!error && response.statusCode === 200) {
           const books = JSON.parse(body)
           console.log("Got a response: ", books)
@@ -36,4 +36,3 @@ router.get("/regex/:name", checkAuth, (req, res, next) => {
 });
 
 module.exports = router;
-

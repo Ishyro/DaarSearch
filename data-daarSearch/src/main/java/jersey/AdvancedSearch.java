@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import java.nio.file.Files;
 import java.nio.file.FileSystems;
 import java.nio.charset.StandardCharsets;
+import javax.ws.rs.core.Response;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class AdvancedSearch {
   @GET
   @Path("/{word}")
   @Produces(MediaType.APPLICATION_JSON)
-  public List<String> getMessage(@PathParam("word") String word) {
+  public Response getMessage(@PathParam("word") String word) {
+    List<Book> ret = new ArrayList<Book>();
     List<String> result = new ArrayList<String>();
     try {
       java.nio.file.Path pathBookName = FileSystems.getDefault().getPath(".", "src/main/resources/books_list.txt");
@@ -35,7 +37,8 @@ public class AdvancedSearch {
         List<String> lines = Files.readAllLines(path, StandardCharsets.ISO_8859_1);
         for (String line : lines) {
           if (automata.accept(line) != null) {
-            result.add("{\n\tbookName: \"" + nameOnly + "\",\n\tbookContent: \"" + word + "\"\n\t}");
+            //result.add("{\n\tbookName: \"" + nameOnly + "\",\n\tbookContent: \"" + word + "\"\n\t}");
+            ret.add(new Book(nameOnly, word));
             break;
           }
         }
@@ -44,6 +47,10 @@ public class AdvancedSearch {
     catch(Exception e) {
       System.out.println(e);
     }
-    return result;
+    //return result;
+
+    return Response.status(Response.Status.OK)
+             .entity(ret)
+             .build();
   }
 }

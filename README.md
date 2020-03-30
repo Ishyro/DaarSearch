@@ -1,6 +1,8 @@
 # DaarSearch
 
-## to run the ui 
+* The server : http://51.75.124.11:4200/
+
+## to run the ui
 * npm i         // to install the dependencies..
 * npm start
 
@@ -19,13 +21,13 @@
 
 ## backlog
 > ui-front-back
-* Authentication 
+* Authentication
 * Search component ( word )
 * Advanced Search ( regex )
 * Document list component
 * Document View component
 * Adding logs to mongoDB
-* Ranking Component 
+* Ranking Component
 * SimilarResponse component
 *
 
