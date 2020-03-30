@@ -1,4 +1,4 @@
-TOPTARGETS := all java index jaccard betweenness clean clean_data clean_all
+TOPTARGETS := all java index jaccard betweenness booklist clean clean_data clean_all
 
 SUBDIRS := data-daarSearch #$(wildcard */.)
 
