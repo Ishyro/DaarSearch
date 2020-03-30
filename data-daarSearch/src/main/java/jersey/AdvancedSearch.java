@@ -24,7 +24,7 @@ import automata.Automata;
 public class AdvancedSearch {
 
   @GET
-  @Path("/{word}")
+  @Path("bookSearch/{word}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getMessage(@PathParam("word") String word) {
     List<Book> result = new ArrayList<Book>();
@@ -54,25 +54,29 @@ public class AdvancedSearch {
              .build();
   }
 
-  public List<Book> getSuggestion(Book book) {
-    List<Book> result = new ArrayList<Book>();
-    try {
-      java.nio.file.Path pathJaccard = FileSystems.getDefault().getPath("src/main/resources/jaccards", book.getName() + ".jaccard");
-      List<String> bookNames = Files.readAllLines(pathJaccard, StandardCharsets.ISO_8859_1);
-      for (int i = 0; i < Math.min(3, bookNames.size()); i++) {
-        addBook(bookNames.get(i), result);
-      }
-    }
-    catch(Exception e) {
-      System.out.println(e);
-    }
-    return result;
-  }
+  // @Path("/recoAdvancedSearch/{word}")
+  // public Response getSuggestion(@PathParam("word") String word) {
+  //   List<Book> result = new ArrayList<Book>();
+  //   try {
+  //     java.nio.file.Path pathJaccard = FileSystems.getDefault().getPath("src/main/resources/jaccards", word + ".jaccard");
+  //     List<String> bookNames = Files.readAllLines(pathJaccard, StandardCharsets.ISO_8859_1);
+  //     for (int i = 0; i < Math.min(3, bookNames.size()); i++) {
+  //       addBook(bookNames.get(i), result);
+  //     }
+  //   }
+  //   catch(Exception e) {
+  //     System.out.println(e);
+  //   }
+  //
+  //   return Response.status(Response.Status.OK)
+  //       .entity(result)
+  //       .build();
+  // }
 
   private void addBook(String name, List<Book> result) throws IOException, SecurityException {
     java.nio.file.Path pathBookContent = FileSystems.getDefault().getPath("src/main/resources/books", name + ".txt");
     List<String> listContent = Files.readAllLines(pathBookContent, StandardCharsets.ISO_8859_1);
     String content = String.join("\n",listContent);
-    result.add(new Book(name, content));
+    result.add(new Book(name, content, content.substring(100,200)));
   }
 }

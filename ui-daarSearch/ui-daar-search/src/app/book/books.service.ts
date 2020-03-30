@@ -17,4 +17,13 @@ export class BookService {
     const regexBooks = this.http.get(`http://localhost:3000/api/book/regex/${name}`);
     return regexBooks;
   }
+
+  getRecommendation(name: string) {
+    const books = this.http.get(`http://localhost:3000/api/recommendation/${name}`);
+    return books;
+  }
+  getRegexRecommendation(name: string) {
+    const regexBooks = this.http.get(`http://localhost:3000/api/recommendation/regex/${name}`);
+    return regexBooks;
+  }
 }

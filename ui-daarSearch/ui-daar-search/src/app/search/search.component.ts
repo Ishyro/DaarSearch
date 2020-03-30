@@ -28,6 +28,8 @@ export class SearchComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'content'];
   dataSource: any = [];
+  dataSourceContent: any = [];
+  dataSourceSuggestion: any = [];
   suggestions: string[] = [];
 
   constructor(public dialog: MatDialog, public bookService: BookService, public searchService: SearchService) {}
@@ -109,7 +111,7 @@ export class SearchComponent implements OnInit {
     console.log(book);
 
     const dialogRef = this.dialog.open(DocumentViewComponent, {
-      width: '400px',
+      width: '800px',
       data: {book}
     });
 

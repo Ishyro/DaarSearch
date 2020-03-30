@@ -10,13 +10,13 @@ const checkAuth = require("../middleware/check-auth");
 router.get("/:name", checkAuth, (req, res, next) => {
 
 
-    request('http://localhost:8080/search/bookSearch/'+req.body.name, (error, response, body)=> {
+    request('http://localhost:8080/search/recoSearch/'+req.body.name, (error, response, body)=> {
         if (!error && response.statusCode === 200) {
           const books = JSON.parse(body)
           console.log("Got a response: ", books)
           res.status(200).json(books);
         } else {
-          //console.log("Got an error: ", error, ", status code: ", response.statusCode)
+          console.log("Got an error: ", error, ", status code: ", response.statusCode)
         }
       })
 
@@ -24,13 +24,13 @@ router.get("/:name", checkAuth, (req, res, next) => {
 
 router.get("/regex/:name", checkAuth, (req, res, next) => {
 
-    request('http://localhost:8080/advancedSearch/bookSearch/'+req.body.name, (error, response, body)=> {
+    request('http://localhost:8080/advancedSearch/recoAdvancedSearch/'+req.body.name, (error, response, body)=> {
         if (!error && response.statusCode === 200) {
           const books = JSON.parse(body)
-          //console.log("Got a response: ", books)
+          console.log("Got a response: ", books)
           res.status(200).json(books);
         } else {
-          //console.log("Got an error: ", error, ", status code: ", response.statusCode)
+          console.log("Got an error: ", error, ", status code: ", response.statusCode)
         }
       })
 });
