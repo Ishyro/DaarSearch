@@ -54,6 +54,21 @@ public class AdvancedSearch {
              .build();
   }
 
+  public List<Book> getSuggestion(Book book) {
+    List<Book> result = new ArrayList<Book>();
+    try {
+      java.nio.file.Path pathJaccard = FileSystems.getDefault().getPath("src/main/resources/jaccards", book.getName() + ".jaccard");
+      List<String> bookNames = Files.readAllLines(pathJaccard, StandardCharsets.ISO_8859_1);
+      for (int i = 0; i < Math.min(3, bookNames.size()); i++) {
+        addBook(bookNames.get(i), result);
+      }
+    }
+    catch(Exception e) {
+      System.out.println(e);
+    }
+    return result;
+  }
+
   private void addBook(String name, List<Book> result) throws IOException, SecurityException {
     java.nio.file.Path pathBookContent = FileSystems.getDefault().getPath("src/main/resources/books", name + ".txt");
     List<String> listContent = Files.readAllLines(pathBookContent, StandardCharsets.ISO_8859_1);
