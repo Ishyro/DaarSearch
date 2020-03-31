@@ -12,7 +12,7 @@ router.get("/:name/:page", checkAuth, (req, res, next) => {
     request('http://localhost:8080/search/bookSearch/'+req.params.name+"/"+req.params.page, (error, response, body)=> {
         if (!error && response.statusCode === 200) {
           const books = JSON.parse(body)
-          console.log("Got a response: ", books)
+          //console.log("Got a response: ", books)
           res.status(200).json(books);
         } else {
           //console.log("Got an error: ", error, ", status code: ", response.statusCode)
@@ -23,10 +23,9 @@ router.get("/:name/:page", checkAuth, (req, res, next) => {
 
 router.get("/regex/:name/:page", checkAuth, (req, res, next) => {
 
-    request('http://localhost:8080/advancedSearch/bookSearch/'+req.params.name+"/"+req.params.page, (error, response, body)=> {
+    request('http://localhost:8080//advancedsearch/bookSearch/'+req.params.name+"/"+req.params.page, (error, response, body)=> {
         if (!error && response.statusCode === 200) {
           const books = JSON.parse(body)
-          //console.log("Got a response: ", books)
           res.status(200).json(books);
         } else {
           //console.log("Got an error: ", error, ", status code: ", response.statusCode)

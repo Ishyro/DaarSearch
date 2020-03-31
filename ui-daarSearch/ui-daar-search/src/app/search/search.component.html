@@ -1,3 +1,4 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-card>
   <h2><em>Type the name of a book here, or some regex !</em></h2>
   <form (submit)="search(searchForm)" #searchForm="ngForm">
@@ -114,7 +115,7 @@
       <mat-button-toggle value="ten">10</mat-button-toggle>
 
     </mat-button-toggle-group>
-    
+
   <hr>
   <app-document-random></app-document-random>
 

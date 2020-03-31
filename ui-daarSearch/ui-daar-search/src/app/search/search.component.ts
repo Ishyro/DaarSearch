@@ -37,6 +37,7 @@ export class SearchComponent implements OnInit {
   pageSizeOptions = [1, 2, 5, 10];
 
   currentWord = "";
+  isLoading = false;
 
   constructor(public dialog: MatDialog, public bookService: BookService, public searchService: SearchService) {}
 
@@ -48,13 +49,23 @@ export class SearchComponent implements OnInit {
   }
 
   loadPage(value) {
+    this.isLoading = true;
     console.log("value : " + value);
     if(this.currentWord) {
       if ( this.isRegex(this.currentWord)) {
-        this.dataSource = this.bookService.getRegexBooks(this.currentWord, value);
+        this.bookService.getRegexBooks(this.currentWord, value).
+        subscribe( res => {
+          this.dataSource = res;
+          this.isLoading = false;
+        });
 
       } else {
-        this.dataSource = this.bookService.getBooks(this.currentWord, value);
+        this.dataSource = this.bookService.getBooks(this.currentWord, value).
+        subscribe( res => {
+          this.dataSource = res;
+          this.isLoading = false;
+        });
+        //this.dataSource = this.bookService.getBooks(this.currentWord, value);
       }
 
     }
@@ -77,16 +88,27 @@ export class SearchComponent implements OnInit {
 
   search(form: NgForm) {
     console.log('searching!');
+    this.isLoading = true;
     const searchingName = form.value.book;
     if (searchingName) {
       if ( this.isRegex(searchingName)) {
-        this.dataSource = this.bookService.getRegexBooks(form.value.book, "1");
+        this.bookService.getRegexBooks(form.value.book, "1").
+        subscribe( res => {
+          this.dataSource = res;
+          this.isLoading = false;
+        });
+
         this.searchService.addSearches(form.value.book);
         this.currentWord = form.value.book;
         //this.suggestions = this.searchService.getSearches();
 
       } else {
-        this.dataSource = this.bookService.getBooks(form.value.book, "1");
+        this.dataSource = this.bookService.getBooks(form.value.book, "1").
+        subscribe( res => {
+          this.dataSource = res;
+          this.isLoading = false;
+        });
+
         this.searchService.addSearches(form.value.book);
         this.currentWord = form.value.book;
         //this.suggestions = this.searchService.getSearches();

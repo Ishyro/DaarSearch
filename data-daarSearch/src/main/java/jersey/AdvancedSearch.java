@@ -51,16 +51,16 @@ public class AdvancedSearch {
     }
 
     int sizeBooks = result.size();
-    int windowBooks = sizeBooks / 30;
+    int windowBooks = sizeBooks / 30; // it's a hell of big size list !
     int start_1 = windowBooks * ( page - 1);
-    int end_1 = start_1 + windowBooks;
+    int end_1 = start_1 + 10;
     if( end_1 >= sizeBooks) end_1 = sizeBooks;
     List<Book> ret = result.subList(start_1, end_1);
 
     System.out.println("hello sil");
 
     return Response.status(Response.Status.OK)
-             .entity(result)
+             .entity(ret)
              .build();
   }
 
