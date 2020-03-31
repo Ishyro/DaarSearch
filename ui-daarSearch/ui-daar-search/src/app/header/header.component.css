@@ -15,22 +15,28 @@ a {
 
 ul {
   display: flex;
+  color: white;
 }
 
 li {
   margin-right: 1%;
+  color: white;
 }
 
 mat-toolbar {
   height: 12%;
+  background-color: black;
 }
 
 #title {
   font-size: 40px;
   font-weight: 500;
-  font-style: italic;
+  font-style: bold;
+  color: white;
 }
 
 .auths {
   font-weight: 800;
+  color: white;
+  
 }
