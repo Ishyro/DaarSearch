@@ -40,6 +40,43 @@
 
   </table>
 
+<!-- paginator Books -->
+  <mat-button-toggle-group  name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle (click)="loadPage(1)" value="one">1</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(2)" value="two">2</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(3)" value="three">3</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(4)" value="four">4</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(5)" value="five">5</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(6)" value="six">6</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(7)" value="seven">7</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(8)" value="eight">8</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(9)" value="nine">9</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(10)" value="ten">10</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(11)" value="one1">11</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(12)" value="two1">12</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(13)" value="three1">13</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(14)" value="four1">14</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(15)" value="five1">15</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(16)" value="six1">16</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(17)" value="seven1">17</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(18)" value="eight1">18</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(19)" value="nine1">19</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(20)" value="ten1">20</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(21)" value="one2">21</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(22)" value="two2">22</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(23)" value="fou2r">23</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(24)" value="five2">24</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(25)" value="six2">25</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(26)" value="seven2">26</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(27)" value="eight2">27</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(28)" value="nine2">28</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(29)" value="ten2">29</mat-button-toggle>
+    <mat-button-toggle (click)="loadPage(30)" value="ten2">30</mat-button-toggle>
+
+
+  </mat-button-toggle-group>
+
+
 
   <h5>Suggestions to read </h5>
 
@@ -62,6 +99,22 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
+
+  <!-- paginator Suggestions -->
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle value="one">1</mat-button-toggle>
+      <mat-button-toggle value="two">2</mat-button-toggle>
+      <mat-button-toggle value="three">3</mat-button-toggle>
+      <mat-button-toggle value="four">4</mat-button-toggle>
+      <mat-button-toggle value="five">5</mat-button-toggle>
+      <mat-button-toggle value="six">6</mat-button-toggle>
+      <mat-button-toggle value="seven">7</mat-button-toggle>
+      <mat-button-toggle value="eight">8</mat-button-toggle>
+      <mat-button-toggle value="nine">9</mat-button-toggle>
+      <mat-button-toggle value="ten">10</mat-button-toggle>
+
+    </mat-button-toggle-group>
+    
   <hr>
   <app-document-random></app-document-random>
 

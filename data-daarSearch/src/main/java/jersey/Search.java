@@ -23,9 +23,9 @@ import kmp.Facteur;
 public class Search {
 
   @GET
-  @Path("bookSearch/{word}")
+  @Path("bookSearch/{word}/{page}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMessage(@PathParam("word") String word) {
+  public Response getMessage(@PathParam("word") String word, @PathParam("page") int page) {
     List<Book> result = new ArrayList<Book>();
     try {
       // this file is already sorted by betweenness
@@ -49,11 +49,21 @@ public class Search {
         }
       }
     }
+
     catch(Exception e) {
       System.out.println(e);
     }
+
+    // get the sublist with a given page from the list
+    int sizeBooks = result.size();
+    int windowBooks = sizeBooks / 30;
+    int start_1 = windowBooks * ( page - 1);
+    int end_1 = start_1 + windowBooks;
+    if( end_1 >= sizeBooks) end_1 = sizeBooks;
+    List<Book> ret = result.subList(start_1, end_1);
+
     return Response.status(Response.Status.OK)
-                .entity(result)
+                .entity(ret)
                 .build();
   }
 

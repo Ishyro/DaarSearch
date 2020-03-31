@@ -26,7 +26,8 @@ import {
   MatDialogModule,
   MatTableModule,
   MatAutocompleteModule,
-  MatOptionModule
+  MatOptionModule,
+  MatButtonToggleModule
 } from '@angular/material';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BookComponent } from './book/book.component';
@@ -65,7 +66,8 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     MatDialogModule,
     MatTableModule,
     MatAutocompleteModule,
-    MatOptionModule
+    MatOptionModule,
+    MatButtonToggleModule
   ],
   entryComponents: [
     LoginComponent,
