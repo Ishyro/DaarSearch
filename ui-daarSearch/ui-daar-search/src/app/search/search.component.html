@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-card>
-  <h2><em>Type the name of a book here, or some regex !</em></h2>
+  <h2><em>Search a word or a regex..</em></h2>
   <form (submit)="search(searchForm)" #searchForm="ngForm">
     <mat-form-field>
       <input matInput name="book" placeholder="..."
@@ -27,7 +27,20 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> N° Book </th>
-      <td mat-cell *matCellDef="let element" (click)="show(element)"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element" >
+
+        <a class="codeBook" mat-button  accent>
+          <em (click)="show(element)">{{element.name}}</em>
+        </a>
+
+        <a class="auths" mat-button (click)="loadSuggestion(element.name)" accent>More suggestions about this book !</a>
+       </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="shortName">
+      <th mat-header-cell *matHeaderCellDef> title </th>
+      <td mat-cell *matCellDef="let element"> <strong> {{element.shortName}} </strong> </td>
     </ng-container>
 
     <!-- Name Column -->
@@ -36,13 +49,16 @@
       <td mat-cell *matCellDef="let element"> {{element.contentBubble}} </td>
     </ng-container>
 
+
+
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
 
 <!-- paginator Books -->
-  <mat-button-toggle-group  name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle-group  name="fontStyle" aria-label="Font Style" *ngIf="dataSource.length > 0">
     <mat-button-toggle (click)="loadPage(1)" value="one">1</mat-button-toggle>
     <mat-button-toggle (click)="loadPage(2)" value="two">2</mat-button-toggle>
     <mat-button-toggle (click)="loadPage(3)" value="three">3</mat-button-toggle>
@@ -87,7 +103,16 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> N° Book </th>
-      <td mat-cell *matCellDef="let element" (click)="show(element)"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element" >
+        <a class="codeBook" mat-button  accent>
+          <em (click)="show(element)">{{element.name}}</em>
+        </a>
+       </td>
+    </ng-container>
+
+    <ng-container matColumnDef="shortName">
+      <th mat-header-cell *matHeaderCellDef> title </th>
+      <td mat-cell *matCellDef="let element"> <strong> {{element.shortName}} </strong> </td>
     </ng-container>
 
     <!-- Name Column -->
@@ -96,25 +121,14 @@
       <td mat-cell *matCellDef="let element"> {{element.contentBubble}} </td>
     </ng-container>
 
+
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
 
-  <!-- paginator Suggestions -->
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle value="one">1</mat-button-toggle>
-      <mat-button-toggle value="two">2</mat-button-toggle>
-      <mat-button-toggle value="three">3</mat-button-toggle>
-      <mat-button-toggle value="four">4</mat-button-toggle>
-      <mat-button-toggle value="five">5</mat-button-toggle>
-      <mat-button-toggle value="six">6</mat-button-toggle>
-      <mat-button-toggle value="seven">7</mat-button-toggle>
-      <mat-button-toggle value="eight">8</mat-button-toggle>
-      <mat-button-toggle value="nine">9</mat-button-toggle>
-      <mat-button-toggle value="ten">10</mat-button-toggle>
 
-    </mat-button-toggle-group>
 
   <hr>
   <app-document-random></app-document-random>

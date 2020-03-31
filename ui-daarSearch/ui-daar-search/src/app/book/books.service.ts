@@ -34,12 +34,16 @@ export class BookService {
     return regexBooks;
   }
 
-  getRecommendation(name: string) {
-    const books = this.http.get(`http://localhost:3000/api/recommendation/${name}`);
-    return books;
+  getRecommendation(name: string, page: string) {
+    const recoBooks = new Observable( observer => {
+        this.http.get(`http://localhost:3000/api/recommendation/${name}/${page}`).
+        subscribe( response => {
+          console.log(response);
+          observer.next(response);
+        })
+    });
+    //const books = this.http.get(`http://localhost:3000/api/recommendation/${name}/${page}`);
+    return recoBooks;
   }
-  getRegexRecommendation(name: string) {
-    const regexBooks = this.http.get(`http://localhost:3000/api/recommendation/regex/${name}`);
-    return regexBooks;
-  }
+
 }

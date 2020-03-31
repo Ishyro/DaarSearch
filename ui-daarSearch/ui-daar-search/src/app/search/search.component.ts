@@ -26,16 +26,17 @@ const ELEMENT_DATA: BookElement[] = [
 })
 export class SearchComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'content'];
+  displayedColumns: string[] = ['name', 'shortName', 'content'];
   dataSource: any = [];
   dataSourceContent: any = [];
+
   dataSourceSuggestion: any = [];
+  dataSourceSuggestionContent: any = [];
+
+
   suggestions: string[] = [];
 
-  postsPerPage = 2;
-  currentPage = 1;
-  pageSizeOptions = [1, 2, 5, 10];
-
+  currentNumberBook = "";
   currentWord = "";
   isLoading = false;
 
@@ -48,9 +49,22 @@ export class SearchComponent implements OnInit {
     //console.log(this.suggestions);
   }
 
+  loadSuggestion(bookNumber){
+    this.isLoading = true;
+    console.log("helloooo" +bookNumber);
+    if(bookNumber){
+      this.bookService.getRecommendation(bookNumber, "1").
+      subscribe( res => {
+        this.dataSourceSuggestion = res;
+        this.currentNumberBook = bookNumber;
+        this.isLoading = false;
+      });
+    }
+  }
+
   loadPage(value) {
     this.isLoading = true;
-    console.log("value : " + value);
+    //console.log("value : " + value);
     if(this.currentWord) {
       if ( this.isRegex(this.currentWord)) {
         this.bookService.getRegexBooks(this.currentWord, value).
@@ -72,12 +86,13 @@ export class SearchComponent implements OnInit {
 
   }
 
+
   refresh()  {
     console.log("refresh logs");
 
     //this.suggestions = this.searchService.getSearches();
     this.searchService.getSearches().subscribe( res => {
-      console.log("aloha : "+res);
+      //console.log("aloha : "+res);
       this.updateSuggestion(res);
     });
   }
@@ -87,7 +102,7 @@ export class SearchComponent implements OnInit {
   }
 
   search(form: NgForm) {
-    console.log('searching!');
+    //console.log('searching!');
     this.isLoading = true;
     const searchingName = form.value.book;
     if (searchingName) {

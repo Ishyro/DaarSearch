@@ -36,3 +36,17 @@ td, tr{
 ng-container{
   padding: 20%;
 }
+
+.auths{
+  background: black;
+  border-radius: 15px;
+  color: white;
+  margin-left: 3%;
+}
+
+.codeBook{
+  padding-left: 5%;
+  padding-right: 5%;
+  background: green;
+  border-radius: 10px;
+}
