@@ -25,8 +25,7 @@
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction}
 
-Ce document est notre rapport de projet Cloud
-Dans ce projet, nous cherchons d'abord à implémenter un moteur de recherche sur une base de documents textuels, pour ensuite le rendre accessible sur le web sous la forme d'une application.\\
+Ce document est notre rapport de projet Cloud pour l'UE DAAR. Nous l'avons codé avec le language Java. Dans ce projet, nous cherchons d'abord à implémenter un moteur de recherche sur une base de documents textuels, pour ensuite le rendre accessible sur le web sous la forme d'une application.\\
 Lorque que l'utilisateur donne un mot, ce moteur de recherche doit pouvoir rendre la liste des livres contenant ce mot, ainsi qu'une liste de suggestions de livres proches des meilleurs résultats.\\
 Les sources de notre projet sont disponibles ici : \url{https://github.com/Ishyro/DaarSearch}.\\
 Pour classer les résultats et déterminer quels livres suggerer, nous avons choisi de placer les livres de notre bibliothèque dans un graphe géométrique, dont les arrêtes correspondent à la distance de Jaccard entre les différents livres. Ce critère nous permet de décider quels livres nous pouvons suggérer, il nous suffira de regarder quels sont les livres les plus proche de celui qui nous concerne. A l'aide de ce graphe, nous pouvons également définir un critère de centralité afin de classer les livres en fonction de leur importance dans le graphe. Ce classement nous permet de déterminer l'ordre dans lequel nous trierons la liste de résultats obtenue par l'utilisateur.
@@ -35,7 +34,7 @@ Pour classer les résultats et déterminer quels livres suggerer, nous avons cho
 
 Une des contraintes de notre projet est de pouvoir rechercher des expressions régulières (notées RegEx) en plus des mots simples. Cependant, une recherche de RegEx est moins performante qu'une simple recherche de mot et prend donc davantage de temps à se réaliser. C'est pourquoi nous utilisons deux algorithmes différents pour faire ces deux types de recherches, même s'il est tout à fait possible de rechercher un simple mot avec notre algorithme de recherche de RegEx.
 
-\subsection{KMP}
+\subsection{Knuth-Morris-Pratt}
 
 Pour rechercher les simples mots, nous utilisons l'algorithme Knuth-Morris-Pratt, qui est très performant car il peut trouver un mot en une seul lecture du texte ($0(n)$), là où un algorithme naif devrait faire des rollbacks à chaque fois qu'il ne matcherait pas la lettre attendue.\\
 
@@ -44,6 +43,7 @@ recherchée. Ces indices sont calculés en fonction du motif, et des caractères
 
 Après cette étape, on effectue l’algorithme egrep like a proprement parlé et chaque fois que la correspondance échoue, on regarde l’indice correspondant et on reprend à l’emplacement correspondant. Par exemple si l’on cherche le motif sargon et qu’on effectue une vérification sur sarah, les 3 premiers caractères vont correspondre mais une fois arrivé au deuxième a de sarah, le test de correspondance échoue. On va regarder l’indice correspondant et sachant que lors de la première étape nous avonsconstaté qu’il n’y avait pas d’autre prefixe potentiel dans sarah, on transmet l’information en indiquant qu’on peut recommencer la vérification à partir du h ce qui évite un rollback au niveau du premier a.
 
+\newpage
 
 \subsection{Automate d'Aho-Ulman}
 
@@ -71,13 +71,14 @@ rencontré on réagence l’arbre RegEx pour respecter la traduction. Voici un e
 \end{figure}
 
 Cette étape implique donc la manipulation d’arbre et certains rollbacks pour modifier les liens de parentés des nœuds, car le parsing n’est pas prédictif, on ne peut donc pas anticiper sur le prochain caractère. Dans le pire des cas on a une complexité en $O(2^m)$ pour la construction de l’arbre, m étant la taille de la RegEx. La deuxième étape consiste a transformé ce RegEx Tree en automate, qui est dans notre cas non pas une matrice indiquant tous les états et toutes les transitions entre ces états, mais un modèle plus orienté objet avec une liste de transitions. Pour cela on commence par utiliser les epsilons transitions pour expliciter la totalité du comportement de notre automate puis on supprime ces epsilons transitions pour obtenir une minimisation de notre automate en utilisant la règle fermeture. Une fois cette étape réalisée, on peut appliquer la recherche de motif sur l’automate minimal en parcourant les états d’une transition a une autre, en concluant dans le cas ou l’on parvient à atteindre un état final depuis un état initiale.\\
+
 Au final, cette méthode permet de trouver des mots en $O(n^2)$ ce qui est problématique pour des textes assez longs mais aussi pour de grosses RegEx étant donné la présence de rollbacks. C'est donc pour cela que l'utilisation de l'algorithme KMP est préférable pour un simple mot.
 
-\newpage
+\section{Bibliothèque et graphe}
 
-\section{Bibliothèque}
+Afin de tester et déployer ce projet, nous avons utilisé des livres réels écrits en anglais. Nous nous sommes proccuré $1000$ livres, rendus disponibles par le projet Guttemberg \cite{Guttemberg}. Ainsi, à chaque recherche, nous allons devoir parcourir les $1000$ livres. il est donc judicieux de chercher à faire des optimisations sur les fichiers que nous allons lire.\\
 
-Afin de tester et déployer ce projet, nous avons utilisé des livres réels écrits en anglais. Nous nous sommes proccuré $1000$ livres, rendus disponibles par le projet Guttemberg \cite{Guttemberg}. Ainsi, à chaque recherche, nous allons devoir parcourir les $1000$ livres. il est donc judicieux de chercher à faire des optimisations sur les textes que nous allons cherher.
+De plus, afin de calculer nos critères pour ordonner les livres, et suggérer des livres à l'utilisateur, nous allons utilisé un structure d'arbre où chaque noeud sera un livre, relié aux autres par sa distance de Jaccard avec eux.
 
 \subsection{Indexage}
 
@@ -95,10 +96,11 @@ Un radix tree peut se définir comme un arbre préfix compressé. En effet, cet 
 
 \subsection{Distance de Jaccard}
 
-\textit{Note : suite à une erreur, les distances de Jaccard ainsi que la betweenness ont été calculées à partir de mauvais fichiers d'index. L'aspect théorique autour de ces calculs dont nous allons discuter ici reste pertinent, mais les résultats expérimentaux que nous pouvons en tirer le seront moins. De plus, même si les fichiers d'index ont été corrigés, le bon graphe n'a pas pu être généré, faute de temps. les recherches donneront donc la bonne liste de livre... mais dans un ordre d'importance plutôt inattendu.}\\
+\textit{Note : suite à une erreur, les distances de Jaccard ainsi que la betweenness ont été calculées à partir de mauvais fichiers d'index. L'aspect théorique autour de ces calculs dont nous allons discuter ici reste pertinent, mais les résultats expérimentaux que nous pouvons en tirer le seront moins. De plus, même si les fichiers d'index ont été corrigés, le bon graphe n'a pas pu être généré, faute de temps. les recherches donneront donc la bonne liste de livres... mais dans un ordre d'importance plutôt inattendu.}\\
 
 A partir de ces fichiers d'index, nous pouvons également calculer la distance de Jaccard entre deux livres. C'est un critère visant à déterminer la proximité entre deux textes se basant sur les différences de vocabulaire entre les deux textes. Elle se calcule à partir de cette formule:
-$J(A,B) = \frac{|A \bigcup B | - | A \bigcap B |}{|A \bigcup B |}$. On a en effet uniquement besoin de savoir quels mots sont contenus dans chaque livre. Dans les faits, on va repasser par des arbres radix, car ils nous ferons gagner du temps sur les recherches, mais on peut les construire plus rapidement à partir des indexes qu'à partir des textes originaux.\\
+$J(A,B) = \frac{|A \cup B| - |A \cap B|}{|A \cup B|}$. On a en effet uniquement besoin de savoir quels mots sont contenus dans chaque livre. Dans les faits, on va repasser par des arbres radix, car ils nous ferons gagner du temps sur les recherches, mais on peut les construire plus rapidement à partir des indexes qu'à partir des textes originaux.\\
+
 Une fois qu'on a obtenu la distance de Jaccard entre chaque texte, on va pouvoir créer notre graphe. On considère que deux livres sont liés uniquement si leur distance de Jaccard est inférieure à $0.7$ (valeur arbitraire qui semble bien fonctionner). En effet, avec cette valeur, le graphe contient $78876$ arrêtes, $58$ livres sur $1000$ se retrouvent isolés dans le graphe, mais certains livres ont déjà plus de $300$ voisins, il est donc préférable de ne pas rendre ce seuil plus large.
 
 \subsection{Betweenness}
@@ -117,12 +119,24 @@ Nous allons nous intéresser à quelques unes des valeurs obtenues (Même si ell
 \item Livre 10841 : l'un des nombreux livres avec une betweenness à $0$, il a tout de même $5$ voisins.\\
 \end{itemize}
 
-On voit donc que la betweenness est un critère visant à déterminer l'importance réelle du noeud au sein du graphe entier, et pas simplement à son importance dans un sous graphe limité comme le ferait un simple tri en fonction du nombre de voisins. Un tel tri donnerait évidemment un résultat similaire, car le lien entre les deux valeurs est trivial, mais la précision supplémentaire apportée par la betweenness est non négligeable.
+On voit donc que la betweenness est un critère visant à déterminer l'importance réelle du noeud au sein du graphe entier, et pas simplement à son importance dans un sous graphe limité comme le ferait un simple tri en fonction du degré des noeuds. Un tel tri donnerait évidemment un résultat similaire, car le lien entre les deux valeurs est trivial, mais la précision supplémentaire apportée par la betweenness est non négligeable.
 
 \section{Choix des technologies web}
 
 \section*{Conclusion}
 \addcontentsline{toc}{section}{Conclusion}
+
+Nous avons pu créer un moteur de recherche sur une base de documents textuels fonctionnelle, capable de trier les résultats par ordre d'importance, et de suggérer d'autres lives à l'utilisateur en fonctions de ces résultats. Nos critères utilisés, la distance de Jaccard et la betweenness, peuvent ne pas sembler optimaux pour ordonner des textes littéraires, car ils ne prennent pas en compte des aspects comme le succès d'un livre, l'appartenance à une série de plusieurs tomes... Mais ils ont cependant un grand avantage : ils sont objectifs.\\
+Cependant, on pourrait envisager une amélioration pour la distance de Jaccard. En effet, elle exprime la différence de vocabulaire, mais elle ne fait pas intervenir les données numériques de ce vocabulaire. Elle accorde la même importance à un mot trouvé une fois qu'à un mot trouvé mille fois dans un texte.\\
+
+On pourrait envisager d'utilser la distance de Levenshtein, qui s'intéresse au nombre d'insertions, suppresions et remplacements de caractères nécessaires pour rendre deux textes égaux, mais on aurait encore deux problèmes :\\
+
+\begin{itemize}
+\item Il n'y a aucune raison d'accorder de l'importance à l'ordre des textes.
+\item De même, la taille du texte n'est pas importante, c'est plutôt la densité des mots dans le texte qui nous intéresse.\\
+\end{itemize}
+
+Trouver un critère pour determiner la proximité entre deux textes est en réalité un problème extrêmement complexe, c'est pourquoi même si la distance de Jaccard n'est pas optimale, elle reste satisfaisante pour nos besoins.
 
 
 \bibliography{biblio}{}
