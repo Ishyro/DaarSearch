@@ -39,7 +39,7 @@ index: java dir_index $(INDEX)
 dir_index:
 	$(MKDIR_P) $(DATA)/indexes
 
-$(DATA)/indexes/%.index: data/books/%.txt
+$(DATA)/indexes/%.index: $(DATA)/books/%.txt
 	java -classpath bin index.FileToIndex $< > $@
 
 jaccard: java index $(DATA)/jaccard.txt jaccard_dir $(JACCARD)
