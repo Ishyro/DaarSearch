@@ -96,7 +96,7 @@ Un radix tree peut se définir comme un arbre préfix compressé. En effet, cet 
 
 \subsection{Distance de Jaccard}
 
-\textit{Note : suite à une erreur, les distances de Jaccard ainsi que la betweenness ont été calculées à partir de mauvais fichiers d'index. L'aspect théorique autour de ces calculs dont nous allons discuter ici reste pertinent, mais les résultats expérimentaux que nous pouvons en tirer le seront moins. De plus, même si les fichiers d'index ont été corrigés, le bon graphe n'a pas pu être généré, faute de temps. les recherches donneront donc la bonne liste de livres... mais dans un ordre d'importance plutôt inattendu.}\\
+\textit{Note : suite à une erreur, les distances de Jaccard ainsi que la betweenness ont été calculées à partir de mauvais fichiers d'index. L'aspect théorique autour de ces calculs dont nous allons discuter ici reste pertinent, mais les résultats expérimentaux que nous pouvons en tirer le seront moins. De plus, même si les fichiers d'index ont été corrigés, ils n'ont pas pu être déployés sur le serveur, faute de temps. Les recherches ne fonctionneront donc pas sur tous les mots.}\\
 
 A partir de ces fichiers d'index, nous pouvons également calculer la distance de Jaccard entre deux livres. C'est un critère visant à déterminer la proximité entre deux textes se basant sur les différences de vocabulaire entre les deux textes. Elle se calcule à partir de cette formule:
 $J(A,B) = \frac{|A \cup B| - |A \cap B|}{|A \cup B|}$. On a en effet uniquement besoin de savoir quels mots sont contenus dans chaque livre. Dans les faits, on va repasser par des arbres radix, car ils nous ferons gagner du temps sur les recherches, mais on peut les construire plus rapidement à partir des indexes qu'à partir des textes originaux.\\
@@ -121,7 +121,17 @@ Nous allons nous intéresser à quelques unes des valeurs obtenues (Même si ell
 
 On voit donc que la betweenness est un critère visant à déterminer l'importance réelle du noeud au sein du graphe entier, et pas simplement à son importance dans un sous graphe limité comme le ferait un simple tri en fonction du degré des noeuds. Un tel tri donnerait évidemment un résultat similaire, car le lien entre les deux valeurs est trivial, mais la précision supplémentaire apportée par la betweenness est non négligeable.
 
+\newpage
+
 \section{Choix des technologies web}
+
+Pour déployer notre projet, nous avons choisi Angular, Node.js et Jetty Jersey.\\
+
+\begin{itemize}
+\item Angular : un framework complet bien documenté qui répond à toutes nos attentes.
+\item Node.js : facile à utiliser, et offre de bonnes performances.
+\item Jetty Jersey : facile à utiliser, léger et rapide.\\
+\end{itemize}
 
 \section*{Conclusion}
 \addcontentsline{toc}{section}{Conclusion}
